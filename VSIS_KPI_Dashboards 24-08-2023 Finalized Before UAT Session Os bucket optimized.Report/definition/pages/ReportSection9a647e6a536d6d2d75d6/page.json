@@ -1,0 +1,35 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/1.0.0/schema.json",
+  "name": "ReportSection9a647e6a536d6d2d75d6",
+  "displayName": "Sales Overview Custom",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280,
+  "objects": {
+    "outspacePane": [
+      {
+        "properties": {
+          "width": {
+            "expr": {
+              "Literal": {
+                "Value": "395L"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "visualInteractions": [
+    {
+      "source": "710827052c4caa9e151a",
+      "target": "47d9e02e3c237ea81dc5",
+      "type": "DataFilter"
+    },
+    {
+      "source": "710827052c4caa9e151a",
+      "target": "5c9edcd12304ad613ada",
+      "type": "DataFilter"
+    }
+  ]
+}

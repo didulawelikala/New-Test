@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "VSIS_KPI_Dashboards 24-08-2023 Finalized Before UAT Session Os bucket optimized"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "82953ccb-46b3-4c17-9fd5-5f3e527be1ad"
+  }
+}

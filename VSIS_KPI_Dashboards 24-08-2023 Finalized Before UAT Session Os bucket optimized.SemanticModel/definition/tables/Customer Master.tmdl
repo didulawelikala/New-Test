@@ -1,0 +1,32 @@
+table 'Customer Master'
+	lineageTag: 04949978-a98e-49a1-ac84-605cf8fc15bc
+
+	column CustomerId
+		dataType: string
+		lineageTag: 3fb9b537-365c-41ce-bee6-99a9c5f2e3d5
+		summarizeBy: none
+		sourceColumn: CustomerId
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerName
+		dataType: string
+		lineageTag: a6294930-f8b2-4310-8fc6-78f760c96e18
+		summarizeBy: none
+		sourceColumn: CustomerName
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Customer Master-2695126e-78f1-41b4-971a-c009eb7a3cb1' = m
+		mode: import
+		source =
+				let
+				    Source = #"rep SalesOrder",
+				    #"Removed Other Columns" = Table.SelectColumns(Source,{"CustomerId", "CustomerName"}),
+				    #"Appended Query" = Table.Combine({#"Removed Other Columns", #"Reference to Customer Master"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Appended Query", {"CustomerId"})
+				in
+				    #"Removed Duplicates"
+
+	annotation PBI_ResultType = Table
+

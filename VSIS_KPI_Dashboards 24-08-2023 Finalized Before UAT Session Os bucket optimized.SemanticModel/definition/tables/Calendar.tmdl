@@ -1,0 +1,459 @@
+table Calendar
+	lineageTag: 8f03750f-a741-43c4-82e2-7bdeaee9ba8c
+	dataCategory: Time
+
+	measure 'ytd test' =
+			
+			var Sel_date = MAX(Calendar2[Date])
+			return
+			CALCULATE([Total Sales],DATESYTD('Calendar'[Date]),'Calendar'[Date]<= Sel_date)
+			//CALCULATE([Total Sales],DATESYTD('Calendar'[Date]))
+		lineageTag: 64448985-c16a-4bf0-b0bc-bc1e5ce266be
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Date
+		dataType: dateTime
+		isKey
+		formatString: Short Date
+		lineageTag: 85f81aa9-c8a9-41fd-a32a-0f3a9709931b
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Date]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 6015f535-e24c-4419-94ed-aa06cc7bffd9
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Start of Year'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: e532a82e-86bc-47c0-a54e-622fee034fbd
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Start of Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'End of Year'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: a824cce5-aaef-4c1c-bce1-5113d43bc3c0
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [End of Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: int64
+		formatString: 0
+		lineageTag: 64484426-755b-488e-89a3-69fd7c7415f3
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Month]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Start of Month'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 9d81877d-5f65-4970-b836-f5a1a3b71f24
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Start of Month]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'End of Month'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 337791cb-98d0-4a9b-bd91-8584cf7ae707
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [End of Month]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Days in Month'
+		dataType: int64
+		formatString: 0
+		lineageTag: 01c48696-05c9-4c7a-8942-6cdc8cc18780
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Days in Month]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Month Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: 8a02a284-f424-41e7-b82a-3ed7f9f4057d
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Year Month Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Month Name'
+		dataType: string
+		lineageTag: 233a6487-0a54-4fe1-9e17-5d0833016a33
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Year Month Name]
+		sortByColumn: 'Year Month Number'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Day
+		dataType: int64
+		formatString: 0
+		lineageTag: 38ae8627-fb09-4dbf-9de8-eec0df6cbb5e
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Day]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day Name'
+		dataType: string
+		lineageTag: db0edc31-87df-4dac-b183-28aae0b53d4f
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Day Name]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day Name Short'
+		dataType: string
+		lineageTag: 0de59fd0-b947-484b-a7a1-b34325f8c9dc
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Day Name Short]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day of Week'
+		dataType: int64
+		formatString: 0
+		lineageTag: 41fd291a-4af3-4805-8415-388ee2ae0761
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Day of Week]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day of Year'
+		dataType: int64
+		formatString: 0
+		lineageTag: 4c00ed32-4822-4cb7-8b31-570a95463e0f
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Day of Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Name'
+		dataType: string
+		lineageTag: 2eff6cbc-2893-4b6c-8297-63c98cf7f110
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Month Name]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Name Short'
+		dataType: string
+		lineageTag: 53023539-d2d8-48a7-8c2a-f3a22ae7fc9d
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Month Name Short]
+		sortByColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		dataType: int64
+		formatString: 0
+		lineageTag: f0b8dfd8-0803-415c-b15d-f206f5581b0e
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Quarter]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Quarter Name'
+		dataType: string
+		lineageTag: bad3e0a6-255c-49c7-a448-bb96b27f4af0
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Quarter Name]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Quarter Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: f7bf1b5b-cf23-4ab2-b7b1-219fb9a3c76c
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Year Quarter Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Quarter Name'
+		dataType: string
+		lineageTag: 4e8674df-ff9d-46fb-a25e-53d85510e3d8
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Year Quarter Name]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Start of Quarter'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 16b50341-89ba-4e28-916e-7c2f289fcfab
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Start of Quarter]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'End of Quarter'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: cb70e2d5-dd41-4ded-8a52-d25e37d21edd
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [End of Quarter]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Week of Year'
+		dataType: int64
+		formatString: 0
+		lineageTag: 4810b812-261f-4b7d-904a-dd2b002eb259
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Week of Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Start of Week'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 5a27b6a2-f483-4390-b3d7-2add34d5fbe1
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Start of Week]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'End of Week'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 8e534b4e-2b91-4f56-8a82-96b4814fb414
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [End of Week]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Year'
+		dataType: int64
+		formatString: 0
+		lineageTag: b3fb6a8e-a096-4578-90f1-a42aa07b8dae
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Fiscal Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Quarter'
+		dataType: int64
+		formatString: 0
+		lineageTag: a1df995a-e38d-4543-aea5-e45582371a38
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Fiscal Quarter]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Month'
+		dataType: int64
+		formatString: 0
+		lineageTag: f612c63e-0ea4-4432-94fc-3bb54dbd0b22
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Fiscal Month]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day Offset'
+		dataType: int64
+		formatString: 0
+		lineageTag: c6e49ae1-a847-4cd7-a3a8-e7b781db115b
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Day Offset]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Offset'
+		dataType: int64
+		formatString: 0
+		lineageTag: 453feead-f5a8-4261-9634-8c1dc97c4cb6
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Month Offset]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Quarter Offset'
+		dataType: int64
+		formatString: 0
+		lineageTag: 6519c902-86f1-49a2-984f-f27646edef58
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Quarter Offset]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Offset'
+		dataType: int64
+		formatString: 0
+		lineageTag: d5aa871a-87fa-4da8-9d61-8893bfdda354
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [Year Offset]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Date Key' = DATE(YEAR('Calendar'[Date]),MONTH('Calendar'[Date]),DAY('Calendar'[Date]))
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 77117397-dc7b-4234-b46c-0f0b63521415
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Fiscal Date' = DATE('Calendar'[Fiscal Year],'Calendar'[Fiscal Month],'Calendar'[Day])
+		dataType: dateTime
+		formatString: m/d/yyyy
+		lineageTag: 2b6b8946-dced-4eb2-85b6-fdf1db867861
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column Column
+		type: calculated
+		dataType: int64
+		lineageTag: 9124f365-05b5-4405-9787-eb82804a4c24
+		summarizeBy: sum
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Calendar-1a1ab1f9-7265-4fcc-b071-592c6084c38d = calculated
+		mode: import
+		source = ```
+				
+				var _today=TODAY()
+				var _mindate = DATE(2020,1,1)
+				var _maxdate = TODAY()
+				var _startOfFiscalYear=4
+				return
+				ADDCOLUMNS(
+				    CALENDAR(
+				                _mindate,
+				                _maxdate
+				),
+				"Year",YEAR([Date]),
+				"Start of Year",DATE( YEAR([Date]),1,1),
+				"End of Year",DATE( YEAR([Date]),12,31),
+				"Month",MONTH([Date]),
+				"Start of Month",DATE( YEAR([Date]), MONTH([Date]), 1),
+				"End of Month",EOMONTH([Date],0),
+				"Days in Month",DATEDIFF(DATE( YEAR([Date]), MONTH([Date]), 1),EOMONTH([Date],0),DAY)+1,
+				"Year Month Number",INT(FORMAT([Date],"YYYYMM")),
+				"Year Month Name",FORMAT([Date],"YYYY-MMM"),
+				"Day",DAY([Date]),
+				"Day Name",FORMAT([Date],"DDDD"),
+				"Day Name Short",FORMAT([Date],"DDD"),
+				"Day of Week",WEEKDAY([Date]),
+				"Day of Year",DATEDIFF(DATE( YEAR([Date]), 1, 1),[Date],DAY)+1,
+				"Month Name",FORMAT([Date],"MMMM"),
+				"Month Name Short",FORMAT([Date],"MMM"),
+				"Quarter",QUARTER([Date]),
+				"Quarter Name","Q"&FORMAT([Date],"Q"),
+				"Year Quarter Number",INT(FORMAT([Date],"YYYYQ")),
+				"Year Quarter Name",FORMAT([Date],"YYYY")&" Q"&FORMAT([Date],"Q"),
+				"Start of Quarter",DATE( YEAR([Date]), (QUARTER([Date])*3)-2, 1),
+				"End of Quarter",EOMONTH(DATE( YEAR([Date]), QUARTER([Date])*3, 1),0),
+				"Week of Year",WEEKNUM([Date]),
+				"Start of Week", [Date]-WEEKDAY([Date])+1,
+				"End of Week",[Date]+7-WEEKDAY([Date]),
+				//"Fiscal Year",if(_startOfFiscalYear=1,YEAR([Date]),YEAR([Date])+ QUOTIENT(MONTH([Date])+ (13-_startOfFiscalYear),13)),
+				"Fiscal Year",if(MONTH([Date])<_startOfFiscalYear,YEAR([Date])-1,YEAR([Date])),
+				"Fiscal Quarter",QUARTER( DATE( YEAR([Date]),MOD( MONTH([Date])+ (13-_startOfFiscalYear) -1 ,12) +1,1) ),
+				"Fiscal Month",MOD( MONTH([Date])+ (13-_startOfFiscalYear) -1 ,12) +1,
+				"Day Offset",DATEDIFF(_today,[Date],DAY),
+				"Month Offset",DATEDIFF(_today,[Date],MONTH),
+				"Quarter Offset",DATEDIFF(_today,[Date],QUARTER),
+				"Year Offset",DATEDIFF(_today,[Date],YEAR)
+				)
+				
+				```
+
+	annotation PBI_Id = 09789315159946b186c263512f013583
+

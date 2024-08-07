@@ -1,0 +1,69 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["rep ActualCost","rep Employee","rep InvoiceCnDn","rep OutstandingPayment","rep Payment","rep SalesOrder","rep Target","SalesOrderBridge","InvoiceCnDnBridge","Measure","Dimension","Customer Master","Reference to Customer Master","Top 10 Customers","Top 10 Salespersons","Top 10 Salespersons (Custom)","Top 10 Customers (Custom)","Os_bucket_Table"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBIDesktopVersion = 2.131.1203.0 (24.07)
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table 'rep ActualCost'
+ref table DateTableTemplate_eee4fd81-3cf2-44ba-8a7c-3ffb55fedbea
+ref table LocalDateTable_a37c2351-f96b-4ad3-9c59-ebb64dc83864
+ref table 'rep Employee'
+ref table LocalDateTable_40e8bdd0-06b8-407c-8c0e-d6e3dac1a72c
+ref table 'rep InvoiceCnDn'
+ref table 'rep OutstandingPayment'
+ref table 'rep Payment'
+ref table LocalDateTable_57c42116-1c29-4715-91c7-1a711df043f8
+ref table 'rep SalesOrder'
+ref table 'rep Target'
+ref table LocalDateTable_5e91ea3d-1b90-4622-a429-cb4dcf2a0e4c
+ref table SalesOrderBridge
+ref table Calendar
+ref table LocalDateTable_f3d7f246-02ab-4f87-ab62-fc04ece30022
+ref table LocalDateTable_f66e23f1-5604-4d23-8236-9feaa27296fc
+ref table LocalDateTable_2ee5ed97-c235-4f5c-8f13-cce30ffbf789
+ref table InvoiceCnDnBridge
+ref table Measure
+ref table LocalDateTable_fe4a6d44-8b4c-4029-b4c1-d67bc6b84d48
+ref table Calendar2
+ref table LocalDateTable_a40ca1a4-663f-492e-8094-df96750ad43b
+ref table LocalDateTable_b6eecc81-dfd9-4da7-aa71-43509683fd7f
+ref table Dimension
+ref table LocalDateTable_f42f52cd-ced9-4ad3-b615-d3b4af39b5d0
+ref table LocalDateTable_9637f159-d986-486c-bcd4-b099760d1bae
+ref table 'Customer Master'
+ref table LocalDateTable_aea249c9-e786-47c1-a47b-79f2240b05f1
+ref table LocalDateTable_31ce7298-e621-42bc-8dfb-4d259e646c11
+ref table LocalDateTable_784aa2b2-ae67-4149-8735-1676006de9cd
+ref table 'Top 10 Customers'
+ref table 'Top 10 Salespersons'
+ref table Table
+ref table LocalDateTable_06b14a96-5705-4bca-8999-7201c207206d
+ref table 'Table 2'
+ref table LocalDateTable_372897bb-6093-44de-881b-5433a3919175
+ref table LocalDateTable_51296c58-3231-41e4-8052-4a5bc09088e4
+ref table LocalDateTable_6773c8dc-f84a-449e-90d5-a66bff4ccdd8
+ref table LocalDateTable_12c4e6c1-5e79-4ce0-9b3c-aa8ffb127741
+ref table LocalDateTable_d88fee9f-1973-43b0-a052-d7ff6fd92e11
+ref table LocalDateTable_c702a0b7-4550-4d23-85c2-4ba700afa773
+ref table LocalDateTable_ded9f90f-d910-45c4-afe6-dc4f1d5c0445
+ref table LocalDateTable_ea19a990-038f-41cf-959f-88a051568072
+ref table LocalDateTable_668b1bc1-e33e-4739-96ac-88a3df9fd082
+ref table LocalDateTable_9a770370-d2a1-4b69-b93b-9dc7d1b84c07
+ref table LocalDateTable_ba2e92b0-8723-473c-8aef-dc49b0af9a27
+ref table 'Top 10 Salespersons (Custom)'
+ref table 'Top 10 Customers (Custom)'
+ref table Os_bucket_Table
+ref table LocalDateTable_25a55c6c-34e2-41fa-b4d8-a481c077d13b
+
+ref cultureInfo en-US
+

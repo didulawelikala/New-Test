@@ -1,0 +1,195 @@
+table 'rep Payment'
+	lineageTag: 80c78d95-5c86-4767-92f0-e0d7fbb6d2e8
+
+	column PaymentDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: b3418050-391c-43a7-9b56-40371cded85c
+		summarizeBy: none
+		sourceColumn: PaymentDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column PaymentNumber
+		dataType: string
+		lineageTag: cb2ffb87-eb0e-4a1d-b8a3-d291c97f78e8
+		summarizeBy: none
+		sourceColumn: PaymentNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column InvoiceNumber
+		dataType: string
+		lineageTag: f82d04f0-c3ba-446c-a886-f883d34501ff
+		summarizeBy: none
+		sourceColumn: InvoiceNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column InvoiceAmountWithoutTax
+		dataType: double
+		lineageTag: a88afb4b-34c3-4f46-93fa-d2a35ff1621b
+		summarizeBy: sum
+		sourceColumn: InvoiceAmountWithoutTax
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column InvoiceAmountWithTax
+		dataType: double
+		lineageTag: 94d6ed22-6386-435e-9502-62b67daebeee
+		summarizeBy: sum
+		sourceColumn: InvoiceAmountWithTax
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PaymentValue
+		dataType: double
+		lineageTag: 61a90631-03fd-492e-ad59-148de8b79552
+		summarizeBy: sum
+		sourceColumn: PaymentValue
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CumulativePaymentValue
+		dataType: double
+		lineageTag: 67c3fddc-4915-4206-8fe3-61cadba5f9ec
+		summarizeBy: sum
+		sourceColumn: CumulativePaymentValue
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CreatedDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 498373bc-2d33-4975-a747-bb997f033486
+		summarizeBy: none
+		sourceColumn: CreatedDate
+
+		variation Variation
+			isDefault
+			relationship: 54983f7d-8af1-488f-9141-a5e17eb9719f
+			defaultHierarchy: LocalDateTable_57c42116-1c29-4715-91c7-1a711df043f8.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CreatedUser
+		dataType: string
+		lineageTag: 75ca440b-86c4-4e60-a6c0-08844fca1076
+		summarizeBy: none
+		sourceColumn: CreatedUser
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Inv date' = LOOKUPVALUE('rep InvoiceCnDn'[InvoiceDate],'rep InvoiceCnDn'[InvoiceNumber],'rep Payment'[InvoiceNumber])
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 879c5ce3-6531-4484-a437-5196424b5d66
+		summarizeBy: none
+		isDataTypeInferred
+
+		variation Variation
+			isDefault
+			relationship: 37931b8d-0551-44e1-a360-3805c7c9aae3
+			defaultHierarchy: LocalDateTable_fe4a6d44-8b4c-4029-b4c1-d67bc6b84d48.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Days Delay' = -'rep Payment'[Inv date].[Date]+'rep Payment'[PaymentDate]
+		dataType: double
+		lineageTag: 274bccc8-80f0-41c1-9530-3d4ade85f1c0
+		summarizeBy: sum
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Daily cum payment' = CALCULATE(SUM('rep Payment'[PaymentValue]),ALLSELECTED('rep Payment'),'rep Payment'[PaymentDate]<=EARLIER('rep Payment'[PaymentDate]),'rep Payment'[InvoiceNumber]=EARLIER('rep Payment'[InvoiceNumber]))
+		dataType: double
+		lineageTag: e2f66a28-e89e-437b-aea5-b38570ac3d0c
+		summarizeBy: sum
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SO_Date = RELATED(SalesOrderBridge[OrderCreatedDate])
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 572d0c0b-ff94-4cca-9d56-ffc2114f7dcd
+		summarizeBy: none
+		isDataTypeInferred
+
+		variation Variation
+			isDefault
+			relationship: 18a2ad65-a6db-4a3e-8b90-b5a492fcbdfc
+			defaultHierarchy: LocalDateTable_9637f159-d986-486c-bcd4-b099760d1bae.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column SO_Id = RELATED(InvoiceCnDnBridge[So_Id])
+		dataType: string
+		lineageTag: 87d607b8-5102-445b-970d-fe968a952693
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesPersonId = RELATED(InvoiceCnDnBridge[SalesPersonId])
+		dataType: string
+		lineageTag: c4450e96-b271-4dc5-928b-75c1462f3f1d
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomrId = RELATED(InvoiceCnDnBridge[CustomerId])
+		dataType: string
+		lineageTag: fcd1989b-e91c-4fdb-b8cb-a7533f5b78fe
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column InvoiceAmountUpdatedDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 1f4b7b2d-1601-4383-ac7a-2549fd810e1e
+		summarizeBy: none
+		sourceColumn: InvoiceAmountUpdatedDate
+
+		variation Variation
+			isDefault
+			relationship: 689faf17-f92e-4b59-8a98-bcea478d8a75
+			defaultHierarchy: LocalDateTable_25a55c6c-34e2-41fa-b4d8-a481c077d13b.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition 'rep Payment-5c09ea61-dd12-49db-af1b-7bd623e4cff7' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Databases("sql-mktkpi-prod-aueast-001.database.windows.net"),
+				    #"sqldb-mktkpi-prod-auest-001" = Source{[Name="sqldb-mktkpi-prod-auest-001"]}[Data],
+				    rep_Payment = #"sqldb-mktkpi-prod-auest-001"{[Schema="rep",Item="Payment"]}[Data]
+				in
+				    rep_Payment
+
+	annotation PBI_ResultType = Table
+

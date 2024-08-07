@@ -1,0 +1,100 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/report/1.0.0/schema.json",
+  "themeCollection": {
+    "baseTheme": {
+      "name": "CY22SU11",
+      "reportVersionAtImport": "5.40",
+      "type": "SharedResources"
+    }
+  },
+  "layoutOptimization": "None",
+  "objects": {
+    "section": [
+      {
+        "properties": {
+          "verticalAlignment": {
+            "expr": {
+              "Literal": {
+                "Value": "'Top'"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "outspacePane": [
+      {
+        "properties": {
+          "expanded": {
+            "expr": {
+              "Literal": {
+                "Value": "true"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "resourcePackages": [
+    {
+      "name": "SharedResources",
+      "type": "SharedResources",
+      "items": [
+        {
+          "name": "CY22SU11",
+          "path": "BaseThemes/CY22SU11.json",
+          "type": "BaseTheme"
+        }
+      ]
+    },
+    {
+      "name": "RegisteredResources",
+      "type": "RegisteredResources",
+      "items": [
+        {
+          "name": "kisspng-money-computer-icons-p5986543427421209.png",
+          "path": "kisspng-money-computer-icons-p5986543427421209.png",
+          "type": "Image"
+        },
+        {
+          "name": "pngfind.com-money-icon-png-53723458121570860846.png",
+          "path": "pngfind.com-money-icon-png-53723458121570860846.png",
+          "type": "Image"
+        },
+        {
+          "name": "pngwing.com9505031019611956.png",
+          "path": "pngwing.com9505031019611956.png",
+          "type": "Image"
+        },
+        {
+          "name": "16746973516277180023663-1281048304796727495.png",
+          "path": "16746973516277180023663-1281048304796727495.png",
+          "type": "Image"
+        },
+        {
+          "name": "contract5562465694819589.png",
+          "path": "contract5562465694819589.png",
+          "type": "Image"
+        },
+        {
+          "name": "pngegg9249213018820028.png",
+          "path": "pngegg9249213018820028.png",
+          "type": "Image"
+        },
+        {
+          "name": "21345908fc077f55c6252143b4488e6835794944564058.png",
+          "path": "21345908fc077f55c6252143b4488e6835794944564058.png",
+          "type": "Image"
+        }
+      ]
+    }
+  ],
+  "settings": {
+    "useStylableVisualContainerHeader": true,
+    "defaultDrillFilterOtherVisuals": true,
+    "allowChangeFilterTypes": true,
+    "useEnhancedTooltips": true,
+    "useDefaultAggregateDisplayName": true
+  }
+}

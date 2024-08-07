@@ -1,0 +1,22 @@
+table 'Top 10 Salespersons (Custom)'
+	lineageTag: 31ae37f4-988e-484b-ac0b-f5df0770a7b5
+
+	column Value
+		dataType: string
+		lineageTag: af8b0a31-e8b7-497a-b914-7b3696927e74
+		summarizeBy: none
+		sourceColumn: Value
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Top 10 Salespersons (Custom)-7f9c0adb-ea0f-4d93-8c6d-f5144a9e0cb8' = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45Wcg9QcEzOyEwtS81NzStRitWJVgpOzEktVoqNBQA=", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Value = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Value", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,93 @@
+table SalesOrderBridge
+	lineageTag: a980645b-3be9-4064-b43f-a7af2b948bf9
+
+	column So_Id
+		dataType: string
+		lineageTag: 5c775402-581a-4030-bad8-6067609da97b
+		summarizeBy: none
+		sourceColumn: So_Id
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductCategory
+		dataType: string
+		lineageTag: fda40c88-a9c2-4334-b5d0-c0549a108e04
+		summarizeBy: none
+		sourceColumn: ProductCategory
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderCreatedDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 651c629b-492a-444b-9d8b-96f69722616d
+		summarizeBy: none
+		sourceColumn: OrderCreatedDate
+
+		variation Variation
+			isDefault
+			relationship: 3b96a7ec-7705-43c1-bbea-cd7ca5576ae1
+			defaultHierarchy: LocalDateTable_9a770370-d2a1-4b69-b93b-9dc7d1b84c07.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column SalesPersonId
+		dataType: string
+		lineageTag: 2700a0c2-bd74-44c5-a3a4-ea84607b3bdd
+		summarizeBy: none
+		sourceColumn: SalesPersonId
+
+		annotation SummarizationSetBy = Automatic
+
+	column InvoiveValue = CALCULATE(SUM('rep InvoiceCnDn'[InvoiceValueWithoutTax]),RELATEDTABLE('rep InvoiceCnDn'))
+		dataType: double
+		lineageTag: 6fd99bf9-30ab-4adf-81c5-cc4515885da5
+		summarizeBy: sum
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PaymentValue = CALCULATE(SUM('rep Payment'[PaymentValue]),RELATEDTABLE('rep Payment'))
+		dataType: double
+		lineageTag: d4e8696a-e4ac-4b87-ae86-45d31526611b
+		summarizeBy: sum
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'InvoiceCount SOID' = CALCULATE(DISTINCTCOUNT('rep InvoiceCnDn'[So_Id]),RELATEDTABLE('rep InvoiceCnDn'))
+		dataType: int64
+		formatString: 0
+		lineageTag: d4433206-cbde-4920-bd7a-4fddc4c0407a
+		summarizeBy: sum
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'PaymentCount SOID' = CALCULATE(DISTINCTCOUNT('rep Payment'[SO_Id]),RELATEDTABLE('rep Payment'))
+		dataType: int64
+		formatString: 0
+		lineageTag: 9df722b2-bed7-470f-839d-a9dd83a2547a
+		summarizeBy: sum
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	partition SalesOrderBridge-2e65a4bc-9cf4-4006-9d65-3f08133f1868 = m
+		mode: import
+		source =
+				let
+				    Source = #"rep SalesOrder",
+				    #"Removed Duplicates" = Table.Distinct(Source, {"So_Id"}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Removed Duplicates",{"CustomerId", "CustomerName", "SalesPersonName", "ProductId", "ProductDescription", "Brand", "Model", "SalesOrderType", "Quantity", "UnitCost", "OrderValueWithoutTax", "Tax", "OrderValueWithTax", "ProductManager", "PreSale1", "PreSale2", "CurrencyType", "CurrencyRate", "EstimatedCost", "EstimatedGp", "CreatedDate", "CreatedUser"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+

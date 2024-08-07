@@ -1,0 +1,12 @@
+expression 'Reference to Customer Master' =
+		let
+		    Source = #"rep InvoiceCnDn",
+		    #"Removed Other Columns" = Table.SelectColumns(Source,{"CustomerId", "CustomerName"})
+		in
+		    #"Removed Other Columns"
+	lineageTag: 12bd0376-b86e-4273-858c-87aaf2a3ddb2
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

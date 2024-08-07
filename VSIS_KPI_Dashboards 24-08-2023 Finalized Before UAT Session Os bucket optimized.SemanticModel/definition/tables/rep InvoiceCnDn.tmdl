@@ -1,0 +1,209 @@
+table 'rep InvoiceCnDn'
+	lineageTag: 95f13468-27fc-4766-aab7-7592e7952de3
+
+	column InvoiceDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: e1c89857-9ae4-48d1-a5bd-ae24b0a2cced
+		summarizeBy: none
+		sourceColumn: InvoiceDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column InvoiceNumber
+		dataType: string
+		lineageTag: cb4f4a67-f623-43c2-9def-469cca784f78
+		summarizeBy: none
+		sourceColumn: InvoiceNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column So_Id
+		dataType: string
+		lineageTag: 10cb92a2-051c-4d7a-a715-2f94ae1a2d62
+		summarizeBy: none
+		sourceColumn: So_Id
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerId
+		dataType: string
+		lineageTag: b9a59fa3-2f31-4584-a825-93edec7d2f2b
+		summarizeBy: none
+		sourceColumn: CustomerId
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerName
+		dataType: string
+		lineageTag: b2189ce8-2cc9-41e8-8365-d05dcdd232c3
+		summarizeBy: none
+		sourceColumn: CustomerName
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesPersonId
+		dataType: string
+		lineageTag: 7266474e-227e-4154-8217-5ce52ee9107d
+		summarizeBy: none
+		sourceColumn: SalesPersonId
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesPersonName
+		dataType: string
+		lineageTag: d284f0fb-46ef-453a-b1e1-0d66e921f818
+		summarizeBy: none
+		sourceColumn: SalesPersonName
+
+		annotation SummarizationSetBy = Automatic
+
+	column InvoiceValueWithoutTax
+		dataType: double
+		lineageTag: 53229567-21dc-49a3-8189-cbd21982bdc4
+		summarizeBy: sum
+		sourceColumn: InvoiceValueWithoutTax
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Tax
+		dataType: double
+		lineageTag: 7657e329-271e-4d81-be1b-3b425897ea59
+		summarizeBy: sum
+		sourceColumn: Tax
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column InvoiceValueWithTax
+		dataType: double
+		lineageTag: a813844e-70b7-4988-ad65-a24f3cd84753
+		summarizeBy: sum
+		sourceColumn: InvoiceValueWithTax
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CnDnType
+		dataType: string
+		lineageTag: a1c7e6e8-fada-4bdf-9889-66519c6e5deb
+		summarizeBy: none
+		sourceColumn: CnDnType
+
+		annotation SummarizationSetBy = Automatic
+
+	column CnDnNumber
+		dataType: string
+		lineageTag: a8ca9ec4-4848-40c9-854b-efcd0534249a
+		summarizeBy: none
+		sourceColumn: CnDnNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column InvoiceValueWithCnDn
+		dataType: double
+		lineageTag: 5c5b2932-4b7f-4d77-acb8-10c8888548fd
+		summarizeBy: sum
+		sourceColumn: InvoiceValueWithCnDn
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column InvoiceValueWithCnDnWithTax
+		dataType: double
+		lineageTag: 087c9066-7aaa-44e8-99f4-c834f9de0fa7
+		summarizeBy: sum
+		sourceColumn: InvoiceValueWithCnDnWithTax
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CreatedDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 05568ea2-74f2-4857-b312-9a8a11ca6500
+		summarizeBy: none
+		sourceColumn: CreatedDate
+
+		variation Variation
+			isDefault
+			relationship: 12213c32-c1c0-4f6c-a702-22770d99cea0
+			defaultHierarchy: LocalDateTable_f3d7f246-02ab-4f87-ab62-fc04ece30022.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CreatedUser
+		dataType: string
+		lineageTag: 6c797556-62a5-4d31-8ab7-0158d2a58d8e
+		summarizeBy: none
+		sourceColumn: CreatedUser
+
+		annotation SummarizationSetBy = Automatic
+
+	column SO_Date = LOOKUPVALUE('rep SalesOrder'[OrderCreatedDate],'rep SalesOrder'[So_Id],'rep InvoiceCnDn'[So_Id])
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 5253cbb1-82a1-4529-9fc2-d84b9ea2ddbf
+		summarizeBy: none
+		isDataTypeInferred
+
+		variation Variation
+			isDefault
+			relationship: eaf85c4d-247c-4c12-9b3d-a9b69648a715
+			defaultHierarchy: LocalDateTable_f42f52cd-ced9-4ad3-b615-d3b4af39b5d0.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Month Number' = FORMAT('rep InvoiceCnDn'[InvoiceDate],"YYYYMM")
+		dataType: string
+		lineageTag: 494cfc2a-16a9-43cf-b61a-728f692d978b
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date_xy = 'rep InvoiceCnDn'[InvoiceDate]
+		dataType: dateTime
+		formatString: mm/dd/yyyy
+		lineageTag: 98629762-f957-496b-8612-5a364d1bff1a
+		summarizeBy: none
+		isDataTypeInferred
+
+		variation Variation
+			isDefault
+			relationship: 99a74df5-75ae-4ed7-bdc6-72b20c45e6a2
+			defaultHierarchy: LocalDateTable_31ce7298-e621-42bc-8dfb-4d259e646c11.'Date Hierarchy'
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	partition 'rep InvoiceCnDn-e72d38f3-85db-4e10-a779-b867d53adf04' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Databases("sql-mktkpi-prod-aueast-001.database.windows.net"),
+				    #"sqldb-mktkpi-prod-auest-001" = Source{[Name="sqldb-mktkpi-prod-auest-001"]}[Data],
+				    rep_InvoiceCnDn = #"sqldb-mktkpi-prod-auest-001"{[Schema="rep",Item="InvoiceCnDn"]}[Data],
+				    #"Filtered Rows" = Table.SelectRows(rep_InvoiceCnDn, each ([SalesPersonName] <> null and [SalesPersonName] <> "#N/A" and [SalesPersonName] <> "0"))
+				in
+				    #"Filtered Rows"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

@@ -1,0 +1,280 @@
+table 'rep SalesOrder'
+	lineageTag: c81d1854-009f-41e0-bc1b-f9cdaa3dafc1
+
+	column OrderCreatedDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 64cf69cc-6e69-40bf-9860-a816d077657f
+		summarizeBy: none
+		sourceColumn: OrderCreatedDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column So_Id
+		dataType: string
+		lineageTag: 6b0b10e6-7386-445b-8a9b-60198df8a690
+		summarizeBy: none
+		sourceColumn: So_Id
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerId
+		dataType: string
+		lineageTag: 25bc3304-6e9e-4224-b2f3-8593e5f0188a
+		summarizeBy: none
+		sourceColumn: CustomerId
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerName
+		dataType: string
+		lineageTag: 05659a46-c61e-46bc-a6d7-d16c9947ec41
+		summarizeBy: none
+		sourceColumn: CustomerName
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesPersonId
+		dataType: string
+		lineageTag: 77c5982f-59ef-460b-9ba6-6d0262a7ae83
+		summarizeBy: none
+		sourceColumn: SalesPersonId
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesPersonName
+		dataType: string
+		lineageTag: d1c25189-8b1d-46f8-bac1-f363ce28916c
+		summarizeBy: none
+		sourceColumn: SalesPersonName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductId
+		dataType: string
+		lineageTag: 8caf82bf-4e51-4695-97aa-653a73c328af
+		summarizeBy: none
+		sourceColumn: ProductId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductDescription
+		dataType: string
+		lineageTag: 1d7d10f2-31f9-4a1b-a18b-dd505a818cf4
+		summarizeBy: none
+		sourceColumn: ProductDescription
+
+		annotation SummarizationSetBy = Automatic
+
+	column Brand
+		dataType: string
+		lineageTag: 97715a5e-c6b7-49ea-aeb4-c41efa3f118b
+		summarizeBy: none
+		sourceColumn: Brand
+
+		annotation SummarizationSetBy = Automatic
+
+	column Model
+		dataType: string
+		lineageTag: 287051d1-2913-48b4-b5b7-6cea1e40549f
+		summarizeBy: none
+		sourceColumn: Model
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesOrderType
+		dataType: string
+		lineageTag: c2f15921-6053-498f-a7f0-50427cdeced7
+		summarizeBy: none
+		sourceColumn: SalesOrderType
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quantity
+		dataType: double
+		lineageTag: f3732eee-60da-4fa9-98f7-3c68aca7ac7f
+		summarizeBy: sum
+		sourceColumn: Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column UnitCost
+		dataType: double
+		lineageTag: 173104cc-f9bf-41f0-b318-cf37b6afa6cd
+		summarizeBy: sum
+		sourceColumn: UnitCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column OrderValueWithoutTax
+		dataType: double
+		lineageTag: 171ac54b-1c64-464c-99be-2d9b361c5e5d
+		summarizeBy: sum
+		sourceColumn: OrderValueWithoutTax
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Tax
+		dataType: double
+		lineageTag: 508cef8d-16e6-4238-a5c8-19644eb141d9
+		summarizeBy: sum
+		sourceColumn: Tax
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column OrderValueWithTax
+		dataType: double
+		lineageTag: 141d53b6-36b9-4fc4-8eb5-4e59e4b78dee
+		summarizeBy: sum
+		sourceColumn: OrderValueWithTax
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ProductManager
+		dataType: string
+		lineageTag: 43e8a628-81f4-4a59-bfc9-cd830b45e86a
+		summarizeBy: none
+		sourceColumn: ProductManager
+
+		annotation SummarizationSetBy = Automatic
+
+	column PreSale1
+		dataType: string
+		lineageTag: f516c28d-399f-421f-906b-fe670609a034
+		summarizeBy: none
+		sourceColumn: PreSale1
+
+		annotation SummarizationSetBy = Automatic
+
+	column PreSale2
+		dataType: string
+		lineageTag: b350fcb5-fbea-4b0a-be2b-c0489a605db7
+		summarizeBy: none
+		sourceColumn: PreSale2
+
+		annotation SummarizationSetBy = Automatic
+
+	column CurrencyType
+		dataType: string
+		lineageTag: 782fa1d7-bcd2-4812-83b2-d3ae1dc10ca7
+		summarizeBy: none
+		sourceColumn: CurrencyType
+
+		annotation SummarizationSetBy = Automatic
+
+	column CurrencyRate
+		dataType: double
+		lineageTag: e8eee392-69f9-4e9a-acb1-8b79501fcdc6
+		summarizeBy: sum
+		sourceColumn: CurrencyRate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column EstimatedCost
+		dataType: double
+		lineageTag: e5e7830a-c4f6-4267-87ca-f11690779cad
+		summarizeBy: sum
+		sourceColumn: EstimatedCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column EstimatedGp
+		dataType: double
+		lineageTag: 54db1a1b-47a4-4a04-9742-c6e3dfc07132
+		summarizeBy: sum
+		sourceColumn: EstimatedGp
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CreatedDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: e169d3ce-8173-4b0a-82d8-b8fcaa165094
+		summarizeBy: none
+		sourceColumn: CreatedDate
+
+		variation Variation
+			isDefault
+			relationship: 833fe2ed-f484-400b-9c2a-3ff59981cc76
+			defaultHierarchy: LocalDateTable_2ee5ed97-c235-4f5c-8f13-cce30ffbf789.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CreatedUser
+		dataType: string
+		lineageTag: f48916fd-af4b-4a79-9bd9-1ca403752dbc
+		summarizeBy: none
+		sourceColumn: CreatedUser
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Month Number' = FORMAT('rep SalesOrder'[OrderCreatedDate],"YYYYMM")
+		dataType: int64
+		formatString: 0
+		lineageTag: 914f4db5-d64c-4a3e-92e6-190fa2a71089
+		summarizeBy: sum
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductCategory
+		dataType: string
+		lineageTag: fe418259-50cf-490a-be07-52078f1be748
+		summarizeBy: none
+		sourceColumn: ProductCategory
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year = year('rep SalesOrder'[OrderCreatedDate])
+		dataType: int64
+		formatString: 0
+		lineageTag: d8cff522-7ee3-4c48-8ba7-efd09e6d66ba
+		summarizeBy: sum
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month = MONTH('rep SalesOrder'[OrderCreatedDate])
+		dataType: int64
+		formatString: 0
+		lineageTag: ed2ca246-4191-4255-93a8-97f0223cd911
+		summarizeBy: sum
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'rep SalesOrder-b8b56853-3d5c-4951-8722-7d150971657b' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Databases("sql-mktkpi-prod-aueast-001.database.windows.net"),
+				    #"sqldb-mktkpi-prod-auest-001" = Source{[Name="sqldb-mktkpi-prod-auest-001"]}[Data],
+				    rep_SalesOrder = #"sqldb-mktkpi-prod-auest-001"{[Schema="rep",Item="SalesOrder"]}[Data]
+				in
+				    rep_SalesOrder
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

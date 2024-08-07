@@ -1,0 +1,42 @@
+table Table
+	lineageTag: 8540ed1b-174b-43cb-8193-72876dbe150e
+
+	column InvoiceNumber
+		dataType: string
+		lineageTag: e1cd38ff-674e-4cc2-a021-82ab98c678c3
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: rep OutstandingPayment[InvoiceNumber]
+
+		annotation SummarizationSetBy = Automatic
+
+	column value1
+		dataType: double
+		lineageTag: 4d79e19e-f41f-4adc-9218-b59e0f64b6ce
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [value1]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition Table-459b55db-c6bb-43a6-a508-319a0a422f8a = calculated
+		mode: import
+		source =
+				
+				var maxselecteddate = DATE("2022","04","30") --MAX('Calendar'[Date])
+				
+				return
+				SUMMARIZE('rep OutstandingPayment', 'rep OutstandingPayment'[InvoiceNumber],
+				--"Value",
+				--CALCULATE(SUM('rep OutstandingPayment'[OsBalance]),'rep OutstandingPayment'[PaymentDate]=maxselecteddate)
+				"value1",CALCULATE(SUM('rep OutstandingPayment'[OsBalance]),FILTER('rep OutstandingPayment',OR('rep OutstandingPayment'[PaymentDate]=maxselecteddate ,'rep OutstandingPayment'[PaymentDate]=LASTDATE('rep OutstandingPayment'[PaymentDate]))
+				
+				
+				)))
+
+	annotation PBI_Id = 75b83054c9e04044b34e7d917181be7b
+

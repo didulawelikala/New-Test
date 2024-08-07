@@ -1,0 +1,150 @@
+table 'rep ActualCost'
+	lineageTag: 4b09cfe3-66a4-4d3a-856a-d238fdd8b472
+
+	column ActualDeliveryDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: b4cfa040-604b-4fd6-8e7d-7b6dd77847a7
+		summarizeBy: none
+		sourceColumn: ActualDeliveryDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column So_Id
+		dataType: string
+		lineageTag: 69807a9d-4f1c-4643-a79e-ab573267ea43
+		summarizeBy: none
+		sourceColumn: So_Id
+
+		annotation SummarizationSetBy = Automatic
+
+	column InvoiceNumber
+		dataType: string
+		lineageTag: 514f047f-95d8-4498-9aa4-5ea6d62811c3
+		summarizeBy: none
+		sourceColumn: InvoiceNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductCode
+		dataType: string
+		lineageTag: 609a799b-5785-4a71-94e4-4f9ba7aa1613
+		summarizeBy: none
+		sourceColumn: ProductCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrdQty
+		dataType: double
+		lineageTag: f8c6d1a2-cd98-4dd5-9838-030d36f4b9a4
+		summarizeBy: sum
+		sourceColumn: OrdQty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column UnitCost
+		dataType: double
+		lineageTag: cc77b8ba-8ca7-4f65-a884-ed0c91915602
+		summarizeBy: sum
+		sourceColumn: UnitCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ActualDeliveryCost
+		dataType: double
+		lineageTag: 4f04cdb8-a61c-456f-922e-f10cbdddf988
+		summarizeBy: sum
+		sourceColumn: ActualDeliveryCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CreatedDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: d9d2b7e0-9c31-458d-9533-e6aba0a190a4
+		summarizeBy: none
+		sourceColumn: CreatedDate
+
+		variation Variation
+			isDefault
+			relationship: 11d8ef7d-bfae-4a5d-ae57-12ec676f5a39
+			defaultHierarchy: LocalDateTable_a37c2351-f96b-4ad3-9c59-ebb64dc83864.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CreatedUser
+		dataType: string
+		lineageTag: 5a701474-76b0-4629-af0f-6e1e09d873e1
+		summarizeBy: none
+		sourceColumn: CreatedUser
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Total Cost' = 'rep ActualCost'[OrdQty]*'rep ActualCost'[UnitCost]
+		dataType: double
+		lineageTag: 79363778-dccf-4867-901c-6648087cb931
+		summarizeBy: sum
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Date_xy = 'rep ActualCost'[ActualDeliveryDate]
+		dataType: dateTime
+		formatString: mm/dd/yyyy
+		lineageTag: 6c3c3397-5a44-4a04-8ffa-19db25261149
+		summarizeBy: none
+		isDataTypeInferred
+
+		variation Variation
+			isDefault
+			relationship: 47f7336f-f3c5-48cb-bb74-285f7b329221
+			defaultHierarchy: LocalDateTable_784aa2b2-ae67-4149-8735-1676006de9cd.'Date Hierarchy'
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column CustomerId = RELATED(InvoiceCnDnBridge[CustomerId])
+		dataType: string
+		lineageTag: 6985fd63-7857-4d1c-bde5-27716a330fa6
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesPersonId = RELATED(InvoiceCnDnBridge[SalesPersonId])
+		dataType: string
+		lineageTag: b14f78a2-3f67-42e0-b648-ba3d9a3acb3f
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'rep ActualCost-9cde9f36-219f-40ba-9a5f-ab3d570c13a9' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Databases("sql-mktkpi-prod-aueast-001.database.windows.net"),
+				    #"sqldb-mktkpi-prod-auest-001" = Source{[Name="sqldb-mktkpi-prod-auest-001"]}[Data],
+				    rep_ActualCost = #"sqldb-mktkpi-prod-auest-001"{[Schema="rep",Item="ActualCost"]}[Data]
+				in
+				    rep_ActualCost
+
+	annotation PBI_ResultType = Table
+

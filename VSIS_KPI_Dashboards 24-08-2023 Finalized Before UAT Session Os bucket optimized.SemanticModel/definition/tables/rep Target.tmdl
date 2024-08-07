@@ -1,0 +1,171 @@
+table 'rep Target'
+	lineageTag: ad3846bf-8e45-46c4-9e74-505abf339750
+
+	column SalesPersonId
+		dataType: string
+		lineageTag: f4bf8a7d-29d3-4fc5-9391-0accca7e8205
+		summarizeBy: none
+		sourceColumn: SalesPersonId
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date
+		dataType: string
+		lineageTag: 15c1774b-6bf7-43d9-8ee3-24e7ff3d453c
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column GpTarget
+		dataType: double
+		lineageTag: ea7fa5f7-394c-4f73-852d-541d768a33f6
+		summarizeBy: sum
+		sourceColumn: GpTarget
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column RevenueTarget
+		dataType: double
+		lineageTag: 10f0a90e-1018-4883-b6b0-b727e5184df6
+		summarizeBy: sum
+		sourceColumn: RevenueTarget
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ExpectedGpAchivement
+		dataType: double
+		lineageTag: 46fa76f5-be47-4052-9d0c-d9ac996034e3
+		summarizeBy: sum
+		sourceColumn: ExpectedGpAchivement
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ExpectedRevAchivement
+		dataType: double
+		lineageTag: 9825c5e5-bcc3-42a1-a0fe-5c3eebf3a8c1
+		summarizeBy: sum
+		sourceColumn: ExpectedRevAchivement
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CreatedDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 86204f1b-409a-4a80-9ead-ab064ff9a6db
+		summarizeBy: none
+		sourceColumn: CreatedDate
+
+		variation Variation
+			isDefault
+			relationship: 6a6e8351-6958-473c-ba91-d98b85638121
+			defaultHierarchy: LocalDateTable_5e91ea3d-1b90-4622-a429-cb4dcf2a0e4c.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CreatedUser
+		dataType: string
+		lineageTag: b3679683-f8cf-419c-9889-a693b7af8602
+		summarizeBy: none
+		sourceColumn: CreatedUser
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Target year' = LEFT('rep Target'[Date],4)
+		dataType: int64
+		formatString: 0
+		lineageTag: 7670b6fd-c52d-415d-916e-6d4053019c95
+		summarizeBy: none
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = User
+
+	column 'Target Quarter' = IF(RIGHT('rep Target'[Date],2)="Q1","Q1",IF(RIGHT('rep Target'[Date],2)="Q2","Q2",IF(RIGHT('rep Target'[Date],2)="Q3","Q3",IF(RIGHT('rep Target'[Date],2)="Q4","Q4",BLANK() ))))
+		dataType: string
+		lineageTag: 7dc1f120-a2e7-4709-9efd-071ca05a7144
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Target Month' = IF(RIGHT('rep Target'[Date],3)="Jan","01",IF(RIGHT('rep Target'[Date],3)="Feb","02",IF(RIGHT('rep Target'[Date],3)="Mar","03",IF(RIGHT('rep Target'[Date],3)="Apr","04",IF(RIGHT('rep Target'[Date],3)="May","05",IF(RIGHT('rep Target'[Date],3)="Jun","06",IF(RIGHT('rep Target'[Date],4)="July","07",IF(RIGHT('rep Target'[Date],3)="Aug","08",IF(RIGHT('rep Target'[Date],3)="Sep","09",IF(RIGHT('rep Target'[Date],3)="Oct","10",IF(RIGHT('rep Target'[Date],3)="Nov","11",IF(RIGHT('rep Target'[Date],3)="Dec","12",BLANK()))))))))))))
+		dataType: string
+		lineageTag: 47ed4b46-75d5-4ab5-8f30-05d66492e47f
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Target Quarter Number' = RIGHT('rep Target'[Target Quarter],1)
+		dataType: int64
+		formatString: 0
+		lineageTag: da8c0a2e-27d4-4c88-be54-3a282d670fbc
+		summarizeBy: sum
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Target Month Number' = 'rep Target'[Target Month]
+		dataType: int64
+		formatString: 0
+		lineageTag: 49fe1d3a-0634-46e7-9739-e0e3ca09caf7
+		summarizeBy: sum
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	column Target_Month =
+			
+			SWITCH(TRUE(),
+			'rep Target'[Target Quarter Number]=1,1,
+			'rep Target'[Target Quarter Number]=2,4,
+			'rep Target'[Target Quarter Number]=3,7,
+			'rep Target'[Target Quarter Number]=4,10,
+			'rep Target'[Target Month Number]
+			)
+		dataType: int64
+		formatString: 0
+		lineageTag: 08d70d72-f46c-4755-a899-3486c3f264d1
+		summarizeBy: sum
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column Target_Date = DATE('rep Target'[Target year],'rep Target'[Target_Month],1)
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: dc502764-32bd-4ae6-85b4-ae5eea07e187
+		summarizeBy: none
+		isDataTypeInferred
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition 'rep Target-1c597fd5-577a-47b5-96d9-8c1e4b590989' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Databases("sql-mktkpi-prod-aueast-001.database.windows.net"),
+				    #"sqldb-mktkpi-prod-auest-001" = Source{[Name="sqldb-mktkpi-prod-auest-001"]}[Data],
+				    rep_Target = #"sqldb-mktkpi-prod-auest-001"{[Schema="rep",Item="Target"]}[Data]
+				in
+				    rep_Target
+
+	annotation PBI_ResultType = Table
+

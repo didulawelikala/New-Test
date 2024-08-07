@@ -1,0 +1,52 @@
+table Os_bucket_Table
+	lineageTag: 5590c482-588d-40a8-a37c-cfccd20136de
+
+	column 'Os Bucket'
+		dataType: string
+		lineageTag: d8825f2d-85f6-43d5-aadd-0cdcc945e4e0
+		summarizeBy: none
+		sourceColumn: Os Bucket
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Os bucket start date'
+		dataType: int64
+		formatString: 0
+		lineageTag: 7cfbb5ce-2cc0-477f-8512-f90486558f6a
+		summarizeBy: sum
+		sourceColumn: Os bucket start date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Os bucket end date'
+		dataType: double
+		lineageTag: 6e3ac55b-5c84-4711-95a9-21dd7d380350
+		summarizeBy: sum
+		sourceColumn: Os bucket end date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Os bucket rank'
+		dataType: int64
+		formatString: 0
+		lineageTag: 0525128d-7b1a-4537-aeb1-16e287285a70
+		summarizeBy: sum
+		sourceColumn: Os bucket rank
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Os_bucket_Table-10b70ef7-181f-4e51-8d7c-a172d1f272d0 = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("bc5BDoAgDATAr5ieMaFUKrwFORmf4P9lt1dJIMtOExhDrjdnuy1LEmwGlZmGmG775ix1HUyF4pCOu0OYjNIhWlB0UMSDpoXY+EKhMtfQBjWv7KGRncpfPtGYO2byz1r9KXN+", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Os Bucket" = _t, #"Os bucket start date" = _t, #"Os bucket end date" = _t, #"Os bucket rank" = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Os Bucket", type text}, {"Os bucket start date", Int64.Type}, {"Os bucket end date", type number}, {"Os bucket rank", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

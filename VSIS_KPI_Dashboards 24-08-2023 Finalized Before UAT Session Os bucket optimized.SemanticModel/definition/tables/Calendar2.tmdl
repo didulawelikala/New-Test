@@ -1,0 +1,455 @@
+table Calendar2
+	lineageTag: bd6ff92c-4d0c-4c8e-be7d-9d0106268d06
+
+	column Date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 7d631061-0b19-4d93-8be5-72b76b252dce
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[Date]
+
+		variation Variation
+			isDefault
+			relationship: 08fd9c54-2c5a-4efa-a6f7-038f057afa44
+			defaultHierarchy: LocalDateTable_372897bb-6093-44de-881b-5433a3919175.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 0f59a139-3823-4ed4-aa65-c72d18f25b30
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Start of Year'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 28dc01d2-1644-4374-8dca-545275e1b545
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[Start of Year]
+
+		variation Variation
+			isDefault
+			relationship: 05993709-3799-4125-a06b-7f2efef86a6e
+			defaultHierarchy: LocalDateTable_51296c58-3231-41e4-8052-4a5bc09088e4.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'End of Year'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 15b4a9bf-bd95-4bd5-a720-fc63cdac6c28
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[End of Year]
+
+		variation Variation
+			isDefault
+			relationship: 3879dfd1-46b4-4e44-ab6b-67d636942a62
+			defaultHierarchy: LocalDateTable_6773c8dc-f84a-449e-90d5-a66bff4ccdd8.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: int64
+		formatString: 0
+		lineageTag: 363b4f30-b872-407e-a6ce-176826f7d551
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[Month]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Start of Month'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: d4774e53-f144-4204-9b66-63313b5d1350
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[Start of Month]
+
+		variation Variation
+			isDefault
+			relationship: f8b6c1c8-82fe-4db7-aa54-2a92488eed4d
+			defaultHierarchy: LocalDateTable_12c4e6c1-5e79-4ce0-9b3c-aa8ffb127741.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'End of Month'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 3c0dd659-8d9f-4030-85f8-2c31c1ac351e
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[End of Month]
+
+		variation Variation
+			isDefault
+			relationship: b3fa21c0-33b4-47a5-a67f-c7e09baea7a4
+			defaultHierarchy: LocalDateTable_d88fee9f-1973-43b0-a052-d7ff6fd92e11.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Days in Month'
+		dataType: int64
+		formatString: 0
+		lineageTag: e555a03a-0aaf-4127-8eb5-f49d2eda8350
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[Days in Month]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Month Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: c3632668-b4cf-4898-9bdb-0a142b00becc
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[Year Month Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Month Name'
+		dataType: string
+		lineageTag: 83cdee6f-8ab9-47bd-9f7e-e0bedc7f0258
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[Year Month Name]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Day
+		dataType: int64
+		formatString: 0
+		lineageTag: e782eab2-1a20-46e4-9c86-53008c43750c
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[Day]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day Name'
+		dataType: string
+		lineageTag: 0e9d59ce-221f-4aef-ad2b-02063197bd72
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[Day Name]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day Name Short'
+		dataType: string
+		lineageTag: 6475fcbd-1011-49ac-8c74-6400cf395ad2
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[Day Name Short]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day of Week'
+		dataType: int64
+		formatString: 0
+		lineageTag: 6db40007-e440-4849-9c6f-d870f07b8f7a
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[Day of Week]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day of Year'
+		dataType: int64
+		formatString: 0
+		lineageTag: 8b52c645-fc88-4f5a-9be4-918696291c2f
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[Day of Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Name'
+		dataType: string
+		lineageTag: 4a79e391-8044-434a-98f4-1953b53d947d
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[Month Name]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Name Short'
+		dataType: string
+		lineageTag: 543dd981-7421-4cc2-bed0-cf3b00219847
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[Month Name Short]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		dataType: int64
+		formatString: 0
+		lineageTag: f4b71ef6-2f13-4a89-bf9d-255653715a3e
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[Quarter]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Quarter Name'
+		dataType: string
+		lineageTag: 9886fec2-4612-4c8a-8841-7493532238c9
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[Quarter Name]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Quarter Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: 0a590258-f684-47c6-aab2-1dcf0675eb0f
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[Year Quarter Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Quarter Name'
+		dataType: string
+		lineageTag: f88aecd2-3577-414e-9fb6-cd40ee4cb5f6
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[Year Quarter Name]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Start of Quarter'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 73f3b285-2852-4759-96a4-8f10243086fc
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[Start of Quarter]
+
+		variation Variation
+			isDefault
+			relationship: d6c6fdfc-7cde-4dc7-ab8e-f8beddb24923
+			defaultHierarchy: LocalDateTable_c702a0b7-4550-4d23-85c2-4ba700afa773.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'End of Quarter'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 8a3dda92-602b-4cda-8fad-5f90b7806fa9
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[End of Quarter]
+
+		variation Variation
+			isDefault
+			relationship: 9294ca82-11e5-4c9b-98a0-e015c5509024
+			defaultHierarchy: LocalDateTable_ded9f90f-d910-45c4-afe6-dc4f1d5c0445.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Week of Year'
+		dataType: int64
+		formatString: 0
+		lineageTag: d7d1ec48-7d94-40e3-9ee8-934aa232a9ce
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[Week of Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Start of Week'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 77e69255-7721-4a61-8c54-506c22395803
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[Start of Week]
+
+		variation Variation
+			isDefault
+			relationship: 07a87989-2cd7-41cf-bc1d-27d3e4a6e846
+			defaultHierarchy: LocalDateTable_ea19a990-038f-41cf-959f-88a051568072.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'End of Week'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: ca2f2b4a-4114-456c-8aad-355bb56a44a1
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[End of Week]
+
+		variation Variation
+			isDefault
+			relationship: 2fd76c9b-4bf8-4428-ae5e-d06253008616
+			defaultHierarchy: LocalDateTable_668b1bc1-e33e-4739-96ac-88a3df9fd082.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Year'
+		dataType: int64
+		formatString: 0
+		lineageTag: 1b33934c-ea97-42c0-b5cb-36d91cf8c54f
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[Fiscal Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Quarter'
+		dataType: int64
+		formatString: 0
+		lineageTag: 627f9f34-23f9-4d08-b042-bb57d8b15e07
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[Fiscal Quarter]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Month'
+		dataType: int64
+		formatString: 0
+		lineageTag: 01116ac6-f7f3-4e7c-96f3-12d6a8247bca
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[Fiscal Month]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day Offset'
+		dataType: int64
+		formatString: 0
+		lineageTag: b19f1a77-9839-469c-9535-dad626163479
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[Day Offset]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Offset'
+		dataType: int64
+		formatString: 0
+		lineageTag: 411dc2c9-6c86-4fcc-b92b-5ef60da51502
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[Month Offset]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Quarter Offset'
+		dataType: int64
+		formatString: 0
+		lineageTag: 2e5aa983-ca10-4e3f-8c26-60c4e47902b8
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[Quarter Offset]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Offset'
+		dataType: int64
+		formatString: 0
+		lineageTag: 41e21fbb-3a91-46af-994e-3883b72d269e
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[Year Offset]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Date Key'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 471a70ca-6c17-4bbf-96bd-9d3f65c9dd76
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[Date Key]
+
+		variation Variation
+			isDefault
+			relationship: 4f10125f-3551-4624-b62b-aa402e2fe0c3
+			defaultHierarchy: LocalDateTable_b6eecc81-dfd9-4da7-aa71-43509683fd7f.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Fiscal Date'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: b2f8b9a0-c2c8-4161-a98e-63e3f15935d3
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[Fiscal Date]
+
+		variation Variation
+			isDefault
+			relationship: 494ef33f-32e7-4108-b4f5-8378668315cf
+			defaultHierarchy: LocalDateTable_aea249c9-e786-47c1-a47b-79f2240b05f1.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Column
+		dataType: int64
+		formatString: 0
+		lineageTag: 610dca98-d451-4521-bd14-5882c60de41d
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Calendar[Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Calendar2-06305eca-ca19-4959-8895-3164e49b80a4 = calculated
+		mode: import
+		source = 'Calendar'
+
+	annotation PBI_Id = 134d1879ebe54ddaaf262f7a441c6692
+

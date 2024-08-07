@@ -1,0 +1,102 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/1.0.0/schema.json",
+  "name": "ReportSection037c1880ba220dd4e200",
+  "displayName": "Overall Performance Custom",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "Filter28beb84c453f23ed3a5e",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure"
+              }
+            },
+            "Property": "Estimated GP Percentage"
+          }
+        },
+        "howCreated": "Drillthrough"
+      },
+      {
+        "name": "Filter48ee46b9cd6b6b3b919c",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure"
+              }
+            },
+            "Property": "Estimated GP Percentage"
+          }
+        },
+        "howCreated": "Drillthrough"
+      },
+      {
+        "name": "Filterd565bfbac0ec04c5b6bb",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure"
+              }
+            },
+            "Property": "OS Balance"
+          }
+        },
+        "howCreated": "Drillthrough"
+      }
+    ]
+  },
+  "pageBinding": {
+    "name": "Pod2",
+    "type": "Drillthrough",
+    "parameters": [
+      {
+        "name": "Param_Filter28beb84c453f23ed3a5e",
+        "boundFilter": "Filter28beb84c453f23ed3a5e",
+        "fieldExpr": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure"
+              }
+            },
+            "Property": "Estimated GP Percentage"
+          }
+        }
+      },
+      {
+        "name": "Param_Filter48ee46b9cd6b6b3b919c",
+        "boundFilter": "Filter48ee46b9cd6b6b3b919c",
+        "fieldExpr": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure"
+              }
+            },
+            "Property": "Estimated GP Percentage"
+          }
+        }
+      },
+      {
+        "name": "Param_Filterd565bfbac0ec04c5b6bb",
+        "boundFilter": "Filterd565bfbac0ec04c5b6bb",
+        "fieldExpr": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure"
+              }
+            },
+            "Property": "OS Balance"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,64 @@
+table InvoiceCnDnBridge
+	lineageTag: 58740188-28c3-4d7c-9126-9c79c2d2689a
+
+	column InvoiceNumber
+		dataType: string
+		lineageTag: efa8ccfe-0739-4208-92d7-6718220b27e4
+		summarizeBy: none
+		sourceColumn: InvoiceNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'inv date' = CALCULATE(MIN('rep InvoiceCnDn'[InvoiceDate]),RELATEDTABLE('rep InvoiceCnDn'))
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 0a035449-ce9c-43a1-8832-eb63c9cd16af
+		summarizeBy: none
+		isDataTypeInferred
+
+		variation Variation
+			isDefault
+			relationship: fc377443-f725-4f87-96e3-d4f6936146d8
+			defaultHierarchy: LocalDateTable_a40ca1a4-663f-492e-8094-df96750ad43b.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column So_Id
+		dataType: string
+		lineageTag: 68ab6efc-f1e9-42f9-bda8-c7d268fe3df9
+		summarizeBy: none
+		sourceColumn: So_Id
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesPersonId
+		dataType: string
+		lineageTag: 5e93d3ce-5827-4af6-8cc1-7f6f6312b813
+		summarizeBy: none
+		sourceColumn: SalesPersonId
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerId
+		dataType: string
+		lineageTag: 071c47c1-63fd-4759-bd0a-93a68998ac73
+		summarizeBy: none
+		sourceColumn: CustomerId
+
+		annotation SummarizationSetBy = Automatic
+
+	partition InvoiceCnDnBridge-ccdf3949-23ec-44ce-be0c-2762ec4eb92f = m
+		mode: import
+		source =
+				let
+				    Source = #"rep InvoiceCnDn",
+				    #"Removed Other Columns" = Table.SelectColumns(Source,{"InvoiceNumber", "So_Id","SalesPersonId","CustomerId"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns", {"InvoiceNumber"}),
+				    #"Removed Duplicates1" = Table.Distinct(#"Removed Duplicates", {"InvoiceNumber"})
+				in
+				    #"Removed Duplicates1"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

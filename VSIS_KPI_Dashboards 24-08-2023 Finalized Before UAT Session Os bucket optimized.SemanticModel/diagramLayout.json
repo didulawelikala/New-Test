@@ -1,0 +1,276 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 431.66666666666669,
+        "y": 223.33333333333334
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 1179,
+            "y": 637
+          },
+          "nodeIndex": "rep ActualCost",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 17
+        },
+        {
+          "location": {
+            "x": 915.01666666666688,
+            "y": 83.333333333333343
+          },
+          "nodeIndex": "rep Employee",
+          "size": {
+            "height": 236,
+            "width": 234
+          },
+          "zIndex": 8
+        },
+        {
+          "location": {
+            "x": 1431.9,
+            "y": 632
+          },
+          "nodeIndex": "rep InvoiceCnDn",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 15
+        },
+        {
+          "location": {
+            "x": 1959.5,
+            "y": 628
+          },
+          "nodeIndex": "rep OutstandingPayment",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 13
+        },
+        {
+          "location": {
+            "x": 1691.1,
+            "y": 634
+          },
+          "nodeIndex": "rep Payment",
+          "size": {
+            "height": 312,
+            "width": 234
+          },
+          "zIndex": 18
+        },
+        {
+          "location": {
+            "x": 920.69999999999982,
+            "y": 641
+          },
+          "nodeIndex": "rep SalesOrder",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 10
+        },
+        {
+          "location": {
+            "x": 600.2,
+            "y": 646.6
+          },
+          "nodeIndex": "rep Target",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 12
+        },
+        {
+          "location": {
+            "x": 1575,
+            "y": 1362
+          },
+          "nodeIndex": "Calendar",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 14
+        },
+        {
+          "location": {
+            "x": 219.07203389830511,
+            "y": 111.79661016949154
+          },
+          "nodeIndex": "Measure",
+          "size": {
+            "height": 431.5,
+            "width": 234
+          },
+          "zIndex": 11
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 362.88888888888891
+          },
+          "nodeIndex": "Calendar2",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 9
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 0
+          },
+          "nodeIndex": "Dimension",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 7
+        },
+        {
+          "location": {
+            "x": 1549.2166666666667,
+            "y": 50
+          },
+          "nodeIndex": "Customer Master",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 2411.3,
+            "y": 0
+          },
+          "nodeIndex": "Top 10 Customers",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 2762.3,
+            "y": 0
+          },
+          "nodeIndex": "Top 10 Salespersons",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 3158.5,
+            "y": 0
+          },
+          "nodeIndex": "Table",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 3554.7,
+            "y": 0
+          },
+          "nodeIndex": "Table 2",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 789.41666666666663,
+            "y": 1232.4166666666667
+          },
+          "nodeIndex": "SalesOrderBridge",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 1,
+          "expandedHeight": 300
+        },
+        {
+          "location": {
+            "x": 1735.5833333333333,
+            "y": 275.83333333333331
+          },
+          "nodeIndex": "InvoiceCnDnBridge",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 16
+        },
+        {
+          "location": {
+            "x": 3905.7,
+            "y": 0
+          },
+          "nodeIndex": "Top 10 Salespersons (Custom)",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 4256.7,
+            "y": 0
+          },
+          "nodeIndex": "Top 10 Customers (Custom)",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 4642.9,
+            "y": 0
+          },
+          "nodeIndex": "Os_bucket_Table",
+          "nodeLineageTag": "5590c482-588d-40a8-a37c-cfccd20136de",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 60,
+      "pinKeyFieldsToTop": true,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

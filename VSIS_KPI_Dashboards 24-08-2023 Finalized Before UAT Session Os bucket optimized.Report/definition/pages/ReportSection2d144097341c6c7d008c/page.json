@@ -1,0 +1,20 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/1.0.0/schema.json",
+  "name": "ReportSection2d144097341c6c7d008c",
+  "displayName": "Performance Insights",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280,
+  "visualInteractions": [
+    {
+      "source": "dfd0771386e040094b73",
+      "target": "892689bface035dd709d",
+      "type": "NoFilter"
+    },
+    {
+      "source": "c057ebd5b05ba0040edd",
+      "target": "651886c867ea01adcbda",
+      "type": "NoFilter"
+    }
+  ]
+}

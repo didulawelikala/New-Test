@@ -1,0 +1,1913 @@
+table Measure
+	lineageTag: 4b026117-a05e-403b-8ab1-7f0024d12f02
+
+	measure 'Total Revenue' =
+			
+			var a = FIRSTDATE('Calendar'[Date])
+			var b = LASTDATE('Calendar'[Date])
+			
+			return
+			
+			//CALCULATE(SUM('rep InvoiceCnDn'[InvoiceValueWithoutTax]),DATESBETWEEN('Calendar'[Date],a,b))
+			[Invoice value Value1]
+		displayFolder: Base Measures
+		lineageTag: 57448c9c-d959-4b4a-b5f9-1b1fd9057a53
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Sales' = [Sales Order Value1]
+		displayFolder: Base Measures
+		lineageTag: 16b9557f-678c-49ac-95eb-f74a74c6e885
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Cost of Period' =
+			
+			var a = FIRSTDATE('Calendar'[Date])
+			var b = LASTDATE('Calendar'[Date])
+			
+			return
+			
+			CALCULATE(SUM('rep ActualCost'[ActualDeliveryCost]),DATESBETWEEN('Calendar'[Date],a,b))
+		lineageTag: fa78832b-52fd-40e0-813b-195efc4c0b49
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Actual GP' =
+			
+			[Total Revenue]-[Total Actual Cost]
+		displayFolder: Base Measures
+		lineageTag: 36eec454-d15f-4c04-bb91-7e16e7f4746c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total OS Balance(wrong)' =
+			
+			var Sel_date = MAX('Calendar'[Date])
+			return
+			--Sel_date
+			--CALCULATE(SUM('rep OutstandingPayment'[OsBalance]),'Calendar'[Date]=Sel_date)+0
+			CALCULATE(SUM('rep OutstandingPayment'[OsBalance]),'rep OutstandingPayment'[PaymentDate]=Sel_date)+0
+		displayFolder: Base Measures
+		lineageTag: 6467b948-959a-4859-8b0c-beb3834d1e8b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total OS Count' = ```
+			
+			var Sel_date = MAX('Calendar'[Date])
+			return
+			--Sel_date
+			CALCULATE(DISTINCTCOUNT('rep OutstandingPayment'[InvoiceNumber]),
+			FILTER(VALUES('rep OutstandingPayment'[InvoiceNumber]),[OS Balance]>0),'rep Payment'[PaymentDate]<=Sel_date
+			)
+			
+			
+			```
+		formatString: 0
+		displayFolder: Base Measures
+		lineageTag: c462df9d-5116-4245-9b21-bd49a09bb4d1
+
+	measure 'Total Collection' =
+			
+			var a = FIRSTDATE('Calendar'[Date])
+			var b = LASTDATE('Calendar'[Date])
+			
+			return
+			
+			//CALCULATE(SUM('rep Payment'[PaymentValue]),DATESBETWEEN('Calendar'[Date],a,b))
+			SUM('rep Payment'[PaymentValue])
+		displayFolder: Base Measures
+		lineageTag: 47c85bef-0f84-4586-b6c2-8ee47f392ce2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Before 30 day Collections' = ```
+			
+			CALCULATE([YTD Collections], FILTER('rep Payment','rep Payment'[Days Delay]<=30))
+			 
+			 //&& 'rep Payment'[Daily cum payment]>='rep Payment'[InvoiceAmountWithoutTax]*0.7))
+			```
+		displayFolder: Base Measures
+		lineageTag: 77a46f0d-c2d1-4d7f-ba95-a9f8fbeca068
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Collection Percentage' = DIVIDE([Collection last 30 days (wrong)],[Invoiced last 30 days])
+		lineageTag: c9a33cd2-68fe-4cf9-b984-bffe03118f9d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'YTD Gross Profit' =
+			
+			[YTD Revenue]-[YTD Actual Cost]
+			//TOTALYTD([Total Actual GP],'Calendar'[Date])
+		displayFolder: YTD measures
+		lineageTag: 46943e5a-178c-4be7-8f86-29eb06b558c0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Estimated GP Percentage' =
+			--([YTD Gross Profit]/[Target YTD GP])
+			DIVIDE([YTD Estimated GP],[YTD Target GP])
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Ratios
+		lineageTag: 2c03f395-f655-43c8-8faa-ea96b4d70d8e
+
+		changedProperty = FormatString
+
+	measure 'LYTD Gross Profit' =
+			
+			[LYTD Revenue]-[LYTD Actual Cost]
+			//TOTALYTD([Total Actual GP],SAMEPERIODLASTYEAR('Calendar'[Date]))
+		displayFolder: LYTD/LMTD Measures
+		lineageTag: 02939280-27fa-4357-8c03-5f93e14edc66
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Gross Profit Arrow Colour' =
+			
+			IF([LYTD Gross Profit]<[YTD Gross Profit],"#40eb34","#eb3434")
+		lineageTag: c7ad5147-d91c-4bb2-9b68-f15c4d59616b
+
+	measure 'Target YTD Sales (wrong)' = [Total Yearly Sales Target (wrong)]
+		lineageTag: 41effbe4-36d0-438b-9be3-284d0a62a3c4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'YTD Sales' = ```
+			--TOTALYTD([Total Sales],'Calendar'[Date].[Date])
+			var Sel_date = MAX('Calendar'[Date])
+			var mindate = DATE(YEAR(Sel_date),1,1)
+			return
+			--Sel_date
+			CALCULATE([Total Sales],DATESYTD('Calendar'[Fiscal Date]))--,'Calendar'[Date]<= Sel_date)
+			--CALCULATE([Total Sales],DATESBETWEEN('Calendar'[Date],mindate,Sel_date))
+			//CALCULATE([Total Sales],DATESYTD('Calendar'[Date]),FILTER('Calendar','Calendar'[Date]<=Sel_date))
+			//CALCULATE([Total Sales],DATESYTD('Calendar'[Date]),'Calendar'[Date]<=Sel_date,values('Calendar'[Date]))
+			//TOTALYTD([Total Sales],'Calendar'[Date],'Calendar'[Date]<=Sel_date)
+			--CALCULATE([Total Sales],DATESYTD('Calendar'[Date]))
+			
+			```
+		displayFolder: YTD measures
+		lineageTag: 939e8c36-6956-4197-a5ea-2a7d91daa7d6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Estimated Sales Percentage' =
+			DIVIDE([YTD Sales],[YTD Target Sales])
+			--[YTD Sales]/[Total Yearly Sales Target]
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Ratios
+		lineageTag: 85db6923-3817-499e-a060-7b8381cae7d1
+
+		changedProperty = FormatString
+
+	measure 'LYTD Sales' =
+			
+			var Sel_date = MAX('Calendar2'[Date])
+			var sel_prev_year = DATE(YEAR(Sel_date)-1,MONTH(Sel_date),DAY(Sel_date))
+			return
+			--BELOW ALL THE 3 OPTIONS ARE CORRECT
+			//CALCULATE([YTD Sales],DATEADD('Calendar'[Date],-1,YEAR),'Calendar'[Date]<=sel_prev_year)
+			TOTALYTD([Total Sales],SAMEPERIODLASTYEAR('Calendar'[Fiscal Date]))
+			//CALCULATE([YTD Sales],DATEADD('Calendar'[Date],-1,YEAR))
+		displayFolder: LYTD/LMTD Measures
+		lineageTag: 8fac8482-0a94-4174-941e-4c628b0e6c29
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales Arrow Colour' = IF([LYTD Sales]<[YTD Sales],"#40eb34","#eb3434")
+		lineageTag: 81533796-ac46-4119-a76a-31924bcdf49c
+
+	measure 'LMTD Revenue' =
+			
+			var Sel_date = MAX('Calendar'[Date])
+			var first_of_sel_montg = DATE(year(Sel_date),MONTH(Sel_date)-1,1)
+			var lst_of_sel_montg = DATE(year(Sel_date),MONTH(Sel_date)-1,day(Sel_date))
+			return
+			--Sel_date
+			--TOTALMTD([Total Sales],FILTER('Calendar','Calendar'[Date]<=Sel_date))
+			--TOTALMTD([Total Sales],'Calendar'[Date])
+			CALCULATE([MTD Revenue],DATEADD('Calendar'[Date],-1,MONTH))
+			--CALCULATE([Total Revenue],FILTER('Calendar','Calendar'[Date]>=first_of_sel_montg && 'Calendar'[Date]<=lst_of_sel_montg))
+		displayFolder: LYTD/LMTD Measures
+		lineageTag: d1509721-676f-497b-a38c-a98ec519ea92
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'LYTD Revenue' =
+			
+			var Sel_date = MAX('Calendar2'[Date])
+			var sel_prev_year = DATE(YEAR(Sel_date)-1,MONTH(Sel_date),DAY(Sel_date))
+			return
+			--CALCULATE([YTD Revenue],DATEADD('Calendar'[Date],-1,YEAR),'Calendar'[Date]<=sel_prev_year)
+			TOTALYTD([Total Revenue],SAMEPERIODLASTYEAR('Calendar'[Fiscal Date]))
+		displayFolder: LYTD/LMTD Measures
+		lineageTag: 05b8f781-e282-4ae3-9c93-d7b684c22ee4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'MTD Revenue' =
+			
+			var Sel_date = MAX('Calendar'[Date])
+			var first_of_sel_montg = DATE(year(Sel_date),MONTH(Sel_date),1)
+			return
+			--Sel_date
+			--TOTALMTD([Total Sales],FILTER('Calendar','Calendar'[Date]<=Sel_date))
+			--TOTALMTD([Total Revenue],'Calendar'[Fiscal Date])
+			--CALCULATE([Total Revenue],FILTER('Calendar','Calendar'[Date]>=first_of_sel_montg && 'Calendar'[Date]<=Sel_date))
+			CALCULATE([Total Revenue],DATESMTD('Calendar'[Date]))
+		displayFolder: MTD Measures
+		lineageTag: 1aa6b21e-04ee-49fb-a57b-ffdd39789c93
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'MTD Percentage' = [MTD Revenue]/[LMTD Revenue]
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: MTD Measures
+		lineageTag: 9936dcd4-e27d-4dff-a969-765d4c557e58
+
+		changedProperty = FormatString
+
+	measure 'Revenue LYTD Arrow Colour' = ```
+			
+			 IF([LYTD Revenue]<=[YTD Revenue],"#40eb34","#eb3434")
+			```
+		lineageTag: 6b03a609-ca06-4365-9eb6-60576adf2030
+
+	measure 'YTD Revenue' =
+			
+			var Sel_date = MAX('Calendar'[Date])
+			return
+			--Sel_date
+			CALCULATE([Total Revenue],DATESYTD('Calendar'[Fiscal Date]))--,'Calendar'[Date]<=Sel_date)
+		displayFolder: YTD measures
+		lineageTag: fb3a4034-fcf7-40b1-86a1-62f8778710c4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Revenue LMTD Arrow Colour' =
+			
+			IF([LMTD Revenue]<=[MTD Revenue],"#40eb34","#eb3434")
+		lineageTag: b3f31621-5396-432c-b54b-67ee6010fe51
+
+	measure 'YTD Collections' =
+			
+			var Sel_date = MAX('Calendar'[Date])
+			return
+			--Sel_date
+			CALCULATE([Total Collection],DATESYTD('Calendar'[Fiscal Date]))--,'Calendar'[Date]<=Sel_date)
+		displayFolder: YTD measures
+		lineageTag: 1d1254df-23e6-47d1-bb37-1c42a678c345
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Target Gross Profit of Period' =
+			
+			var a = FIRSTDATE('Calendar'[Date])
+			var b = LASTDATE('Calendar'[Date])
+			
+			return
+			
+			CALCULATE(sum('rep Target'[GpTarget]),DATESBETWEEN('Calendar'[Date],a,b))
+		lineageTag: adcf8c22-28af-4b96-a5a8-f5057dade33c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Cumulative Gross Profit' =
+			
+			CALCULATE([Total Actual GP],
+			FILTER(ALLSELECTED('Calendar'),
+			'Calendar'[Date]<=MAX('Calendar'[Date])
+			))
+		lineageTag: 65674723-8a27-411f-a9f8-1782feac5830
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Collection Count' =
+			
+			DISTINCTCOUNT('rep Payment'[InvoiceNumber])
+		formatString: 0
+		displayFolder: Base Measures
+		lineageTag: 106565e0-0a13-4fcf-9c50-a95e567dfe38
+
+	measure 'Gross Profit LYTD Arrow' =
+			
+			IF([LYTD Gross Profit]<[YTD Gross Profit],"↑","↓")
+		lineageTag: 0cd96920-3f2c-4eff-be00-6e9ee49b04db
+
+	measure 'Sales LYTD Arrow' =
+			
+			IF([LYTD Sales]<[YTD Sales],"↑","↓")
+		lineageTag: 4ca4b236-e0fc-4a22-8a70-0ee223be329c
+
+	measure 'Revenue LYTD Arrow' = IF([LYTD Revenue]<=[YTD Revenue],"↑","↓")
+		lineageTag: 903ea58b-cd60-48de-83f6-c730cf90e531
+
+	measure 'Revenue LMTD Arrow' =
+			
+			IF([LMTD Revenue]<=[MTD Revenue],"↑","↓")
+		lineageTag: 1829a95a-f3c7-4b79-ae37-b6a6a8cc6649
+
+	measure 'Sales Order Value1' = SUMX('rep SalesOrder','rep SalesOrder'[Quantity]*'rep SalesOrder'[UnitCost]*'rep SalesOrder'[CurrencyRate])
+		lineageTag: 4e79e30d-3ec3-428c-99f0-2def6c40c526
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales Order Value2' = SUMX(VALUES('rep SalesOrder'[So_Id]),calculate(MINX('rep SalesOrder',('rep SalesOrder'[OrderValueWithoutTax]))))
+		lineageTag: 955ed940-78b2-4281-b261-e1ee51b9fff9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'MTD Sales' =
+			--TOTALYTD([Total Sales],'Calendar'[Date].[Date])
+			var Sel_date = MAX('Calendar'[Date])
+			var first_of_sel_montg = DATE(year(Sel_date),MONTH(Sel_date),1)
+			return
+			--Sel_date
+			--TOTALMTD([Total Sales],FILTER('Calendar','Calendar'[Date]<=Sel_date))
+			TOTALMTD([Total Sales],'Calendar'[Date])
+			--CALCULATE([Total Sales],FILTER('Calendar','Calendar'[Date]>=first_of_sel_montg && 'Calendar'[Date]<=Sel_date))
+		displayFolder: MTD Measures
+		lineageTag: 2195844f-48f2-4f1f-a375-3451deaa5e92
+
+		changedProperty = FormatString
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'LMTD Sales' =
+			
+			var Sel_date = MAX('Calendar'[Date])
+			var first_of_sel_montg = DATE(year(Sel_date),MONTH(Sel_date)-1,1)
+			var lst_of_sel_montg = DATE(year(Sel_date),MONTH(Sel_date)-1,day(Sel_date))
+			return
+			--Sel_date
+			--TOTALMTD([Total Sales],FILTER('Calendar','Calendar'[Date]<=Sel_date))
+			--TOTALMTD([MTD Sales],'Calendar'[Date])
+			CALCULATE([MTD Sales],DATEADD('Calendar'[Date],-1,MONTH))
+			--CALCULATE([Total Sales],FILTER('Calendar','Calendar'[Date]>=first_of_sel_montg && 'Calendar'[Date]<=lst_of_sel_montg))
+		displayFolder: LYTD/LMTD Measures
+		lineageTag: dc7bcc21-3b21-4753-ba7c-87ba81592d19
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Yearly Sales Target (wrong)' = ```
+			
+			/*var Sel_date = MAX('Calendar'[Fiscal Date])
+			return
+			--year(Sel_date)
+			CALCULATE(SUM('rep Target'[RevenueTarget]),FILTER(VALUES('rep Target'[Target year]),'rep Target'[Target year]=year(Sel_date)))*1000000*/
+			
+			
+			//CALCULATE([Total Sales],DATESYTD('Calendar'[Date]),FILTER('Calendar','Calendar'[Date]<=Sel_date))
+			//CALCULATE([Total Sales],DATESYTD('Calendar'[Date]),'Calendar'[Date]<=Sel_date,values('Calendar'[Date]))
+			//TOTALYTD([Total Sales],'Calendar'[Date],'Calendar'[Date]<=Sel_date)
+			
+			var Sel_date = MAX('Calendar'[Date])
+			var Sel_date_F = MAX('Calendar'[Fiscal Date])
+			var seldateyear = year(Sel_date)
+			var seldatemonth = MONTH(Sel_date)
+			var seldatequarter = QUARTER(Sel_date)
+			--var fiscalyearstart_date = DATE(seldateyear,"4","1")
+			return
+			calculate(SUM('rep Target'[RevenueTarget]),'rep Target'[Target_Month] = seldateyear,seldatemonth>='rep Target'[Target Month Number],seldatequarter>='rep Target'[Target Quarter Number]
+			)*1000000
+			
+			```
+		displayFolder: Base Measures
+		lineageTag: a5daceb0-6945-447a-8d16-37dfc7197837
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Invoice value Value1' =
+			
+			//SUMX('rep InvoiceCnDn','rep InvoiceCnDn'[Quantity]*'rep InvoiceCnDn'[UnitCost])
+			SUM('rep InvoiceCnDn'[InvoiceValueWithoutTax])
+		lineageTag: 563769af-f8be-400a-865a-928ee770a420
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'MTD Collection Value' =
+			
+			var Sel_date = MAX('Calendar'[Date])
+			var first_of_sel_montg = DATE(year(Sel_date),MONTH(Sel_date),1)
+			return
+			--TOTALMTD([Total Collection],'Calendar'[Fiscal Date])
+			--CALCULATE([Total Collection],FILTER('Calendar','Calendar'[Date]>=first_of_sel_montg && 'Calendar'[Date]<=Sel_date))
+			CALCULATE([Total Collection],DATESMTD('Calendar'[Date]))
+		displayFolder: MTD Measures
+		lineageTag: 9f0b1a69-0642-4edc-82b6-cc74bea1666c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'MTD Collection Cnt' =
+			
+			var Sel_date = MAX('Calendar2'[Date])
+			var first_of_sel_montg = DATE(year(Sel_date),MONTH(Sel_date),1)
+			return
+			TOTALMTD([Total Collection Count],'Calendar'[Date])
+			--CALCULATE([Total Collection Count],FILTER('Calendar','Calendar'[Date]>=first_of_sel_montg && 'Calendar'[Date]<=Sel_date))
+		formatString: 0
+		displayFolder: MTD Measures
+		lineageTag: 4a21edb3-e676-4ac3-bf1c-b83b09cdff40
+
+	measure 'Actual Cost Value' = SUMX('rep ActualCost','rep ActualCost'[UnitCost]*'rep ActualCost'[OrdQty])
+		lineageTag: 8a098f2c-a92f-4799-a620-5f6a7693a5fd
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Actual Cost' = [Actual Cost Value]
+		displayFolder: Base Measures
+		lineageTag: 49ba1c57-263c-453b-86ca-dafe107f72e7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'YTD Actual Cost' =
+			--TOTALYTD([Total Sales],'Calendar'[Date].[Date])
+			var Sel_date = MAX('Calendar'[Date])
+			return
+			--Sel_date
+			CALCULATE([Total Actual Cost],DATESYTD('Calendar'[Fiscal Date]))--,'Calendar'[Date]<=Sel_date)
+		displayFolder: YTD measures
+		lineageTag: ba914278-a3b9-47bd-be12-f13c5f054f28
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'LYTD Actual Cost' =
+			
+			var Sel_date = MAX('Calendar2'[Date])
+			var sel_prev_year = DATE(YEAR(Sel_date)-1,MONTH(Sel_date),DAY(Sel_date))
+			return
+			//CALCULATE([YTD Actual Cost],DATEADD('Calendar'[Date],-1,YEAR),'Calendar'[Date]<=sel_prev_year)
+			TOTALYTD([Total Actual Cost],SAMEPERIODLASTYEAR('Calendar'[Fiscal Date]))
+		displayFolder: LYTD/LMTD Measures
+		lineageTag: fed54411-7d14-4bd7-87af-4758c52dc602
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Yearly GP Target (wrong)' =
+			
+			/*var Sel_date = MAX('Calendar'[Fiscal Date])
+			return
+			--year(Sel_date)
+			CALCULATE(SUM('rep Target'[GpTarget]),FILTER(VALUES('rep Target'[Target year]),'rep Target'[Target year]=year(Sel_date)))*1000000*/
+			
+			var Sel_date = MAX('Calendar'[Fiscal Date])
+			
+			var seldateyear = year(Sel_date)
+			var seldatemonth = MONTH(Sel_date)
+			var seldatequarter = QUARTER(Sel_date)
+			--var fiscalyearstart_date = DATE(seldateyear,"4","1")
+			return
+			calculate(SUM('rep Target'[GpTarget]),'rep Target'[Target year] = seldateyear,seldatemonth>='rep Target'[Target Month Number] && seldatequarter>='rep Target'[Target Quarter Number]
+			) * 1000000
+		formatString: 0
+		displayFolder: Base Measures
+		lineageTag: d044d00d-1a14-4200-9485-81f81479adae
+
+	measure 'Target YTD GP (wrong)' = [Total Yearly GP Target (wrong)]
+		lineageTag: e5748479-4515-47be-b2e5-989da8d353e8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'last 6 months Sales' = ```
+			--TOTALYTD([Total Sales],'Calendar'[Date].[Date])
+			var Sel_date = [Sel_date]
+			var sixmonthstart = EOMONTH(Sel_date,-6)+1
+			return
+			IF(MAX('Calendar'[Date])>=sixmonthstart && MAX('Calendar'[Date])<=Sel_date,[Total Sales],BLANK())
+			
+			--datesinve period gives the period regardless of the calendar complete months.but it consider the current period.
+			--eg: if sel_date is 15-04-2022 and 2 months back, it will return the total sales of the period between 15-02-2022 and 15-04-2022. but we wont the calculation to be done over calendar months.
+			--CALCULATE([Total Sales],DATESINPERIOD('Calendar'[Date],Sel_date,-2,MONTH))
+			--parellelpriod ignore the date u selected, instead it consider the complete month.it doesnt include current selection
+			--eg:if the filter date range is 15-04-2022 and before and -2 month periods parellel, it conserdered from 31-01-2022 backwards
+			--CALCULATE([Total Sales],PARALLELPERIOD('Calendar'[Date],-2,MONTH))
+			--dateadd respect to the filter date range.it doesnt include current selection
+			--eg:if the filter date range is 15-04-2022 and before and -2 month periods parellel, it conserdered from 15-02-2022 backwards
+			--CALCULATE([Total Sales],DATEADD('Calendar'[Date],-2,MONTH))
+			
+			--solution is to go with defining start end dates of the needed peirod.but below dowsnt iterate over time.executes in the given period.
+			--CALCULATE([Total Sales],filter('Calendar','Calendar'[Date]>=last_six_m_start && 'Calendar'[Date]<=Sel_date))
+			--need to try datesinvbetween adding extra filters to iterate over time
+			
+			--CALCULATE([Total Sales],DATESINPERIOD('Calendar'[Date],Sel_date,-2,MONTH),'Calendar'[Date]>=last_six_m_start)
+			--we need the exact peirod
+			--CALCULATE([Total Sales],filter(ALLSELECTED('Calendar'[Date]),'Calendar'[Date]>=last_six_m_start && 'Calendar'[Date]<=Sel_date))
+			--CALCULATE([Total Sales],CALCULATETABLE('Calendar','Calendar'[Date]>=last_six_m_start && 'Calendar'[Date]<=Sel_date))
+			//CALCULATE([Total Sales],DATESBETWEEN('Calendar'[Date],last_six_m_start,Sel_date))
+			
+			```
+		formatString: #,0
+		displayFolder: Rolling Measures
+		lineageTag: 13e8d21b-dd60-4bdf-9375-0b5ebeb44ace
+
+		changedProperty = FormatString
+
+	measure 'last 6 months Revenue' = ```
+			--TOTALYTD([Total Sales],'Calendar'[Date].[Date])
+			var Sel_date = [Sel_date]
+			var sixmonthstart = EOMONTH(Sel_date,-6)+1
+			return
+			IF(MAX('Calendar'[Date])>=sixmonthstart && MAX('Calendar'[Date])<=Sel_date,[Total Revenue],BLANK())
+			
+			```
+		displayFolder: Rolling Measures
+		lineageTag: 13a8f968-772c-4ffe-8344-489bcc33acf0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'last 6 months GP' =
+			--TOTALYTD([Total Sales],'Calendar'[Date].[Date])
+			var Sel_date = [Sel_date]
+			var sixmonthstart = EOMONTH(Sel_date,-6)+1
+			return
+			IF(MAX('Calendar'[Date])>=sixmonthstart && MAX('Calendar'[Date])<=Sel_date,[Total Actual GP],BLANK())
+		displayFolder: Rolling Measures
+		lineageTag: 15e92ec5-829e-4ee3-8901-ee0c704a0dcf
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'last 6 months Collection' =
+			--TOTALYTD([Total Sales],'Calendar'[Date].[Date])
+			var Sel_date = [Sel_date]
+			var sixmonthstart = EOMONTH(Sel_date,-6)+1
+			return
+			IF(MAX('Calendar'[Date])>=sixmonthstart && MAX('Calendar'[Date])<=Sel_date,[Total Collection],BLANK())
+		displayFolder: Rolling Measures
+		lineageTag: 3f891d9d-736e-42ff-b29c-e35c07919cbe
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Measure = ```
+			
+			var Sel_date = MAX('Calendar2'[Date])
+			return
+			--TOTALYTD([last 6 months Sales],'Calendar'[Date],'Calendar 2'[Date]<=Sel_date)
+			
+			CALCULATE([last 6 months Sales],FILTER(ALL('Calendar'[Date]),'Calendar'[Date]<=MAX('Calendar'[Date])))
+			
+			```
+		lineageTag: 0df686ed-ad77-451f-94f0-8c4c660406f0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'last 6 month rolling avg Sales' =
+			
+			AVERAGEX(
+			filter
+			(ALLSELECTED('Calendar'[Year Month Number],'Calendar'[Year Month Name]),'Calendar'[Year Month Number]<=MAX('Calendar'[Year Month Number])),[Total Sales Period only])
+		formatString: #,0
+		displayFolder: Rolling Measures
+		lineageTag: 2aded65f-ba39-4aaa-9885-0e54c4715ce8
+
+		changedProperty = FormatString
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'last 6 month rolling avg GP' =
+			
+			AVERAGEX(
+			filter
+			(ALLSELECTED('Calendar'[Year Month Number],'Calendar'[Year Month Name]),'Calendar'[Year Month Number]<=MAX('Calendar'[Year Month Number])),[Total Actual GP])
+		displayFolder: Rolling Measures
+		lineageTag: 30191ba1-96e8-46d9-9875-45e62139f4d1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Collection last 30 days (wrong)' =
+			--TOTALYTD([Total Sales],'Calendar'[Date].[Date])
+			var Sel_date = [Sel_date]
+			var Sel_date_30 = Sel_date-30
+			return
+			--Sel_date
+			CALCULATE([Total Collection],FILTER('Calendar','Calendar'[Date]>=Sel_date_30 && 'Calendar'[Date]<=Sel_date))
+		lineageTag: f542c401-654f-40c4-8ca8-6b56e65b9382
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Invoiced last 30 days' =
+			--TOTALYTD([Total Sales],'Calendar'[Date].[Date])
+			var Sel_date = [Sel_date]
+			var Sel_date_30 = Sel_date-30
+			return
+			--Sel_date
+			CALCULATE([Total Revenue],FILTER('Calendar','Calendar'[Date]>=Sel_date_30 && 'Calendar'[Date]<=Sel_date))
+		lineageTag: f34f8a69-3b38-4654-be1d-20875c90d03d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'last 6 month Collection Count' =
+			
+			--var Sel_date = [Sel_date]
+			var Sel_date = MAX('Calendar'[Date])
+			var ldat_sel_date = EOMONTH(Sel_date,0)
+			var last_six_m_start = EOMONTH(DATE(YEAR(Sel_date),MONTH(Sel_date),DAY(Sel_date)),-7)+1
+			return
+			--Sel_date
+			CALCULATE(DISTINCTCOUNT('rep Payment'[InvoiceNumber]),DATESINPERIOD('Calendar'[Date],ldat_sel_date,-2,MONTH),'Calendar'[Date]<=Sel_date)
+			--CALCULATE(DISTINCTCOUNT('rep Payment'[InvoiceNumber]),filter('Calendar','Calendar'[Date]>=last_six_m_start && 'Calendar'[Date]<=Sel_date))
+		formatString: 0
+		displayFolder: Rolling Measures
+		lineageTag: 098b64a0-0961-4221-bed4-e3c191c4ab44
+
+	measure 'Dept GP Light' = ```
+			UNICHAR(11044)
+			
+			```
+		lineageTag: 9981d08f-cef6-49b7-9f3e-dbc4513ca3ec
+
+	measure 'Dept Sales Light' = UNICHAR(11044)
+		lineageTag: 01268a23-8874-4596-9fed-41a5abe0216e
+
+	measure 'Dept Collection Light' = UNICHAR(11044)
+		lineageTag: a5c4653e-aaf8-47ed-9c86-0c7ad1db83c7
+
+	measure 'GP Bullet Colour' = IF([Estimated GP Percentage]<0.5,"#FF0000",IF([Estimated GP Percentage]<0.75,"#F57200",IF([Estimated GP Percentage]<1,"#35C709",IF([Estimated GP Percentage]<1.5,"#AC1097",IF([Estimated GP Percentage]>=1.5,"#FFD700","#FFFFFF")))))
+		lineageTag: 1235b61e-f558-4dea-bdcc-eeeb8fb841f3
+
+	measure 'Sales Bullet Colour' = IF([Estimated Sales Percentage]<0.5,"#FF0000",IF([Estimated Sales Percentage]<0.75,"#F57200",IF([Estimated Sales Percentage]<1,"#35C709",IF([Estimated Sales Percentage]<1.5,"#AC1097",IF([Estimated Sales Percentage]>=1.5,"#FFD700","#FFFFFF")))))
+		lineageTag: 96ba2c68-36dd-45ba-9697-bd8d22cd7675
+
+	measure 'Collections Bullet Colour' = IF([Collection Percentage]<0.7,"#FF0000",IF([Collection Percentage]>=0.7,"#2BBD0E","#FFFFFF"))
+		lineageTag: c75d69e4-a4af-4a0e-beff-00266aff7de6
+
+	measure 'Highest Outstanding Salesperson' =
+			
+			--var Sel_date = MAX('Calendar 2'[Date])-180
+			--var sales_person = SUMMARIZE('rep Employee','rep Employee'[UserName],"Outstanding",CALCULATE([Total OS Balance]))
+			-- return
+			 --MAXX(sales_person,'rep Employee'[UserName])
+			
+			 --var RankingContext = VALUES('rep Employee'[UserName])
+			 --return
+			    --CALCULATE([Total OS Balance],
+			    --TOPN(1,
+			    --ALL('rep Employee'[UserName]),[Total OS Balance]),RankingContext)
+			
+			FIRSTNONBLANK(TOPN(1,VALUES('rep Employee'[UserName]),[OS Total Balance]),1)
+		lineageTag: cf1360a6-69cb-4c49-b599-7ab13c1c95d7
+
+	measure 'OS Total Balance' =
+			
+			var Sel_date = LASTDATE('Calendar'[Date])
+			return
+			--Sel_date
+			CALCULATE(SUM('rep OutstandingPayment'[OsBalance]),'Calendar'[Date]<=Sel_date)
+		lineageTag: 79c1e627-4d13-4e28-9e57-bef0880728e8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'OS Total Count' =
+			
+			var Sel_date = LASTDATE('Calendar'[Date])
+			return
+			--Sel_date
+			CALCULATE(DISTINCTCOUNT('rep OutstandingPayment'[InvoiceNumber]),'Calendar'[Date]<=Sel_date)
+		formatString: 0
+		lineageTag: 1b9769b8-3d1d-45e3-8b9a-9a751964e32b
+
+	measure 'Overall Total OS Balance' =
+			
+			var Sel_date = MAX('Calendar2'[Date])
+			return
+			--Sel_date
+			CALCULATE(SUM('rep OutstandingPayment'[OsBalance]),'Calendar'[Date]=Sel_date)
+		lineageTag: afa48eff-c0b8-4745-8840-a9e3e3716912
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'last 6 month sales Count' =
+			
+			var Sel_date = MAX('Calendar'[Date])
+			var ldat_sel_date = EOMONTH(Sel_date,0)
+			var last_six_m_start = EOMONTH(DATE(YEAR(Sel_date),MONTH(Sel_date),DAY(Sel_date)),-7)+1
+			return
+			--Sel_date
+			CALCULATE(DISTINCTCOUNT('rep SalesOrder'[So_Id]),DATESINPERIOD('Calendar'[Date],ldat_sel_date,-2,MONTH),'Calendar'[Date]<=Sel_date)
+			--CALCULATE(DISTINCTCOUNT('rep SalesOrder'[So_Id]),filter('Calendar','Calendar'[Date]>=last_six_m_start && 'Calendar'[Date]<=Sel_date))
+		formatString: 0
+		displayFolder: Rolling Measures
+		lineageTag: 11554d70-cd0f-4c58-b831-4da01d05d8ab
+
+	measure 'last 6 month invoice Count' =
+			
+			var Sel_date = MAX('Calendar'[Date])
+			var ldat_sel_date = EOMONTH(Sel_date,0)
+			var last_six_m_start = EOMONTH(DATE(YEAR(Sel_date),MONTH(Sel_date),DAY(Sel_date)),-7)+1
+			return
+			--Sel_date
+			CALCULATE(DISTINCTCOUNT('rep InvoiceCnDn'[InvoiceNumber]),DATESINPERIOD('Calendar'[Date],ldat_sel_date,-2,MONTH),'Calendar'[Date]<=Sel_date)
+			--CALCULATE(DISTINCTCOUNT('rep InvoiceCnDn'[InvoiceNumber]),filter('Calendar','Calendar'[Date]>=last_six_m_start && 'Calendar'[Date]<=Sel_date))
+		formatString: 0
+		displayFolder: Rolling Measures
+		lineageTag: cd4d4273-eb27-46c2-918e-d556e3f76343
+
+	measure 'SO Collection Percentage' = DIVIDE([Total Collection],[Invoice value Value1])
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 922d9c1b-15ad-4ca1-9e4d-8208d53b6139
+
+		changedProperty = FormatString
+
+	measure 'SO Balance(wrong)' = [Invoice value Value1]-[Total Collection]
+		displayFolder: Base Measures
+		lineageTag: 49fef883-d9b4-49a4-b8db-ee752789342a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Selected month SalesOrders' =
+			
+			var DateSelectedInMonth = MAX('Calendar'[Year Month Number])
+			return
+			CALCULATE([Total Sales],filter('Calendar','Calendar'[Year Month Number]==DateSelectedInMonth))+0
+		lineageTag: 814d5185-9148-432d-9b6b-dbc2f2c52217
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales Conversion Last 6 Months' =
+			
+			var Sel_date = [Sel_date]
+			var sixmonthstart = EOMONTH(Sel_date,-6)+1
+			return
+			IF(MAX('Calendar'[Date])>=sixmonthstart && MAX('Calendar'[Date])<=Sel_date,[Total Sales],BLANK())
+		lineageTag: 3ff3888f-0dfc-47e8-9c75-cd9f3e35aa10
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Selected Month SalesOrder Count' =
+			
+			var DateSelectedInMonth = MAX('Calendar'[Year Month Number])
+			return
+			CALCULATE(DISTINCTCOUNT('rep SalesOrder'[So_Id]),filter('Calendar','Calendar'[Year Month Number]==DateSelectedInMonth))+0
+		formatString: 0
+		lineageTag: 9b1e3910-453f-4c44-8429-5f59e149b592
+
+	measure 'Sales Conversion Count Last 6 Months' =
+			
+			var Sel_date = [Sel_date]
+			var last_six_m_start = EOMONTH(Sel_date,-6)+1
+			return
+			--CALCULATE(DISTINCTCOUNT('rep SalesOrder'[So_Id]),filter('Calendar','Calendar'[Date]>=last_six_m_start && 'Calendar'[Date]<=Sel_date))
+			
+			IF(MAX('Calendar'[Date])>=last_six_m_start && MAX('Calendar'[Date])<=Sel_date, DISTINCTCOUNT('rep SalesOrder'[So_Id]),BLANK())
+		formatString: 0
+		lineageTag: 4ae4c1e5-39d1-4ce8-9d9a-a665543ed0ba
+
+	measure 'INV % Six Month' =
+			--DIVIDE([Selected month Invoice],[Selected month SalesOrders])
+			DIVIDE([Invoice Conversion 6 months],[Sales Conversion Last 6 Months])
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 038a7281-7dec-44ee-8270-ea1d85be7923
+
+		changedProperty = FormatString
+
+	measure 'Last Six Month Balance' =
+			--[Selected month Invoice]-[Selected month Collection]
+			[Invoice Conversion 6 months]-[Collection Conversion last 6 months]
+		lineageTag: 862c284e-9025-46b5-a930-3c870ae91344
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'COL% Six Month' =
+			--DIVIDE([Selected month Collection],[Selected month Invoice])
+			DIVIDE([Collection Conversion last 6 months],[Invoice Conversion 6 months])
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: b0e8b82b-c418-4a49-8ece-fd748d6a229c
+
+		changedProperty = FormatString
+
+	measure 'Show Selected Dimension' = if(SELECTEDVALUE('Dimension'[Dimension])="Sales",[YTD Sales],[YTD Revenue])
+		lineageTag: 373b2012-16ab-4624-b3bf-0d19a857c45d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Top 10 Light' =
+			
+			UNICHAR(11044)
+		lineageTag: 1036ddb2-6b87-42af-8b22-9f440b2833f4
+
+	measure 'Top 10 Bullet Colour' = if(SELECTEDVALUE('Dimension'[Dimension])="Sales",[Sales Arrow Colour],[Revenue LYTD Arrow Colour])
+		lineageTag: 566af380-ed1c-4d54-b2b7-b75727fb8450
+
+	measure 'Top 10 Topic' = if(SELECTEDVALUE('Dimension'[Dimension])="Sales","(BASED ON SALES)","(BASED ON REVENUE)")
+		lineageTag: 7a4b0ae1-2c71-4a18-ae0d-2cd92878dd33
+
+	measure 'Total Sales Period only' = ```
+			
+			var Sel_date = [Sel_date]
+			var sixmonthstart = EOMONTH(Sel_date,-6)+1
+			return
+			IF(MAX('Calendar'[Date])>=sixmonthstart && MAX('Calendar'[Date])<=Sel_date,[Total Sales],BLANK())
+			
+			```
+		displayFolder: Rolling Measures
+		lineageTag: d1de03ff-6854-4766-a776-533b34b52d1f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Sel_date = MAXX(ALLSELECTED('Calendar'[Date]),'Calendar'[Date])
+		formatString: General Date
+		lineageTag: ac59a2ae-dd24-4e58-af68-3dc53001fe32
+
+	measure 'Invoice Conversion 6 months' =
+			
+			var Sel_date = [Sel_date]
+			var last_six_m_start = EOMONTH(Sel_date,-6)+1
+			var D2 = MIN('Calendar'[Date])
+			var D3 = MAX('Calendar'[Date])
+			var Cal = CALCULATE([Invoice value Value1],'rep InvoiceCnDn'[SO_Date]>=D2 && 'rep InvoiceCnDn'[SO_Date]<=D3,CROSSFILTER('Calendar'[Date], 'rep InvoiceCnDn'[InvoiceDate], None))
+			return
+			IF(MAX('Calendar'[Date])>=last_six_m_start && MAX('Calendar'[Date])<=Sel_date, Cal,BLANK())
+			--'rep InvoiceCnDn'[InvoiceDate]>=D2
+			--cal
+			--CALCULATE(cal,DATESBETWEEN('rep InvoiceCnDn'[InvoiceDate],last_six_m_start,Sel_date))
+		lineageTag: e319a02c-7409-49b4-a49c-ba6cf1e869c2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure last_six_month_start = MIN(EOMONTH([Sel_date],-7)+1,ALLSELECTED('Calendar'[Date]))
+		formatString: General Date
+		lineageTag: 2846ba86-0878-4a43-8ffa-bfe1a3afa15e
+
+	measure 'Invoice Conversion Count 6 months' =
+			
+			var Sel_date = [Sel_date]
+			var last_six_m_start = EOMONTH(Sel_date,-6)+1
+			var D2 = MIN('Calendar'[Date])
+			var D3 = MAX('Calendar'[Date])
+			var Cal = CALCULATE(DISTINCTCOUNT('rep InvoiceCnDn'[So_Id]),'rep InvoiceCnDn'[SO_Date]>=D2 && 'rep InvoiceCnDn'[SO_Date]<=D3,CROSSFILTER('Calendar'[Date], 'rep InvoiceCnDn'[InvoiceDate], None))
+			return
+			IF(MAX('Calendar'[Date])>=last_six_m_start && MAX('Calendar'[Date])<=Sel_date, Cal,BLANK())
+			--cal
+			--CALCULATE(cal,DATESBETWEEN('rep InvoiceCnDn'[InvoiceDate],last_six_m_start,Sel_date))
+		formatString: 0
+		lineageTag: 4872ae88-b377-4308-8ae5-9163fc0361dd
+
+	measure 'Collection Conversion last 6 months' =
+			
+			var Sel_date = [Sel_date]
+			var last_six_m_start = EOMONTH(Sel_date,-6)+1
+			var D2 = MIN('Calendar'[Date])
+			var D3 = MAX('Calendar'[Date])
+			var Cal = CALCULATE([Total Collection],'rep Payment'[SO_Date]>=D2 && 'rep Payment'[SO_Date]<=D3, CROSSFILTER('Calendar'[Date], 'rep Payment'[PaymentDate], None))
+			return
+			IF(MAX('Calendar'[Date])>=last_six_m_start && MAX('Calendar'[Date])<=Sel_date, Cal,BLANK())
+		lineageTag: ab1cfd05-9558-45c5-8fe6-c5c9e2c9602d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Collection Conversion Count last 6 months' =
+			
+			var Sel_date = [Sel_date]
+			var last_six_m_start = EOMONTH(Sel_date,-6)+1
+			var D2 = MIN('Calendar'[Date])
+			var D3 = MAX('Calendar'[Date])
+			var Cal = CALCULATE(DISTINCTCOUNT('rep Payment'[SO_Id]),'rep Payment'[SO_Date]>=D2 && 'rep Payment'[SO_Date]<=D3,CROSSFILTER('Calendar'[Date], 'rep Payment'[PaymentDate], None))
+			return
+			IF(MAX('Calendar'[Date])>=last_six_m_start && MAX('Calendar'[Date])<=Sel_date, Cal,BLANK())
+		formatString: 0
+		lineageTag: 83ae054d-a0b3-49de-91fd-76d850a9d166
+
+	measure 'Selected month Invoice' =
+			
+			var Sel_date = [Sel_date]
+			var this_m_start = EOMONTH(Sel_date,-1)+1
+			var D2 = MIN('Calendar'[Date])
+			var D3 = MAX('Calendar'[Date])
+			var Cal = CALCULATE([Invoice value Value1],'rep InvoiceCnDn'[SO_Date]>=this_m_start && 'rep InvoiceCnDn'[SO_Date]<=Sel_date,ALLEXCEPT('rep InvoiceCnDn','rep InvoiceCnDn'[InvoiceDate]))
+			return
+			Cal+0
+			--IF(MAX('Calendar'[Date])>=this_m_start && MAX('Calendar'[Date])<=Sel_date, Cal,BLANK())
+		lineageTag: 8760cf93-549b-4ced-a2d2-bd1c36fccc96
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Selected month Collection' = ```
+			
+			 var Sel_date = [Sel_date]
+			var this_m_start = EOMONTH(Sel_date,-1)+1
+			var D2 = MIN('Calendar'[Date])
+			var D3 = MAX('Calendar'[Date])
+			var Cal = CALCULATE([Total Collection],'rep Payment'[SO_Date]>=this_m_start && 'rep Payment'[PaymentDate]<=Sel_date,ALLEXCEPT('rep Payment','rep Payment'[PaymentDate]))
+			return
+			Cal
+			```
+		lineageTag: b806b4b1-bdac-430b-8472-2edae255ad48
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Selected month Invoice Count' =
+			
+			var Sel_date = [Sel_date]
+			var this_m_start = EOMONTH(Sel_date,-1)+1
+			var D2 = MIN('Calendar'[Date])
+			var D3 = MAX('Calendar'[Date])
+			var Cal = CALCULATE(DISTINCTCOUNT('rep InvoiceCnDn'[InvoiceNumber]),'rep InvoiceCnDn'[SO_Date]>=this_m_start && 'rep InvoiceCnDn'[SO_Date]<=Sel_date,ALLEXCEPT('rep InvoiceCnDn','rep InvoiceCnDn'[InvoiceDate]))
+			return
+			Cal
+		formatString: 0
+		lineageTag: 947ac5ce-33e9-43e0-937c-c9542985002d
+
+	measure 'Selected month Collection Count' =
+			
+			var Sel_date = [Sel_date]
+			var this_m_start = EOMONTH(Sel_date,-1)+1
+			var D2 = MIN('Calendar'[Date])
+			var D3 = MAX('Calendar'[Date])
+			var Cal = CALCULATE(DISTINCTCOUNT('rep Payment'[InvoiceNumber]),'rep Payment'[SO_Date]>=this_m_start && 'rep Payment'[PaymentDate]<=Sel_date,ALLEXCEPT('rep Payment','rep Payment'[PaymentDate]))
+			return
+			Cal
+		formatString: 0
+		lineageTag: 07a78cab-cde4-4acc-8da9-116922def0e5
+
+	measure 'Total Gp Target' = ```
+			
+			var a = MIN('Calendar'[Date]) --2022.04.01
+			var b = MAX('Calendar'[Date])  --2022.06.30
+			--Normal slicer date convert into fiscal date
+			var fiscalmina = DATE(
+			    if(MONTH(a)<4,YEAR(a)-1,YEAR(a)),
+			    --YEAR(a) + QUOTIENT(MONTH(a) + (13 - 4),13),
+			    MOD( MONTH(a)+ (13-4) -1 ,12) +1,
+			    DAY(a)
+			    )
+			var fiscalminb = DATE(
+			    if(MONTH(b)<4,YEAR(b)-1,YEAR(b)),
+			    --YEAR(b)+ QUOTIENT(MONTH(b)+ (13 - 4),13),
+			    MOD( MONTH(b)+ (13-4) -1 ,12) +1,
+			    DAY(b)
+			    )
+			var minyear = YEAR(a) --YEAR(fiscalmina) --2022.01.01 --2022
+			var maxyear = YEAR(b) --YEAR(fiscalminb) --2022.03.30 --2022
+			var minmonth = MONTH(a) --MONTH(fiscalmina) --04
+			var maxmonth = MONTH(b) --MONTH(fiscalminb) --06
+			
+			 
+			
+			var result = IF(MONTH(a)>=01 && MONTH(b)<=03,
+			CALCULATE(SUM('rep Target'[GpTarget]),FILTER('rep Target','rep Target'[Target Quarter]=="Q1" || (minmonth<='rep Target'[Target Month Number] && 'rep Target'[Target Month Number]<=maxmonth) || (a<=YEAR('rep Target'[Target year]) && YEAR('rep Target'[Target year])<=b))),
+			IF(MONTH(a)>=04 && MONTH(b)<=06,
+			CALCULATE(SUM('rep Target'[GpTarget]),FILTER('rep Target','rep Target'[Target Quarter]=="Q2" || (minmonth<='rep Target'[Target Month Number] && 'rep Target'[Target Month Number]<=maxmonth) || (a<=YEAR('rep Target'[Target year]) && YEAR('rep Target'[Target year])<=b))),--(a<=YEAR('rep Target'[Target year]) && YEAR('rep Target'[Target year])<=b)),
+			IF(MONTH(a)>=07 && MONTH(b)<=09,
+			CALCULATE(SUM('rep Target'[GpTarget]),FILTER('rep Target','rep Target'[Target Quarter]=="Q3" || (minmonth<='rep Target'[Target Month Number] && 'rep Target'[Target Month Number]<=maxmonth) || (a<=YEAR('rep Target'[Target year]) && YEAR('rep Target'[Target year])<=b))),
+			IF(MONTH(a)>=09 && MONTH(b)<=12,
+			CALCULATE(SUM('rep Target'[GpTarget]),FILTER('rep Target','rep Target'[Target Quarter]=="Q4" || (minmonth<='rep Target'[Target Month Number] && 'rep Target'[Target Month Number]<=maxmonth) || (a<=YEAR('rep Target'[Target year]) && YEAR('rep Target'[Target year])<=b))),
+			IF(MONTH(a)>=01 && MONTH(b)<=06,
+			CALCULATE(SUM('rep Target'[GpTarget]),FILTER('rep Target','rep Target'[Target Quarter]=="Q1"||'rep Target'[Target Quarter]=="Q2" || (minmonth<='rep Target'[Target Month Number] && 'rep Target'[Target Month Number]<=maxmonth) || (a<=YEAR('rep Target'[Target year]) && YEAR('rep Target'[Target year])<=b))),
+			IF(MONTH(a)>=07 && MONTH(b)<=12,
+			CALCULATE(SUM('rep Target'[GpTarget]),FILTER('rep Target','rep Target'[Target Quarter]=="Q3"||'rep Target'[Target Quarter]=="Q4" || (minmonth<='rep Target'[Target Month Number] && 'rep Target'[Target Month Number]<=maxmonth) || (a<=YEAR('rep Target'[Target year]) && YEAR('rep Target'[Target year])<=b))),
+			IF(MONTH(a)>=04 && MONTH(b)<=09,
+			CALCULATE(SUM('rep Target'[GpTarget]),FILTER('rep Target','rep Target'[Target Quarter]=="Q2"||'rep Target'[Target Quarter]=="Q3"|| (minmonth<='rep Target'[Target Month Number] && 'rep Target'[Target Month Number]<=maxmonth) || (a<=YEAR('rep Target'[Target year]) && YEAR('rep Target'[Target year])<=b))),
+			IF(MONTH(a)>=01 && MONTH(b)<=09,
+			CALCULATE(SUM('rep Target'[GpTarget]),FILTER('rep Target','rep Target'[Target Quarter]=="Q1"||'rep Target'[Target Quarter]=="Q2"||'rep Target'[Target Quarter]=="Q3" || (minmonth<='rep Target'[Target Month Number] && 'rep Target'[Target Month Number]<=maxmonth) || (a<=YEAR('rep Target'[Target year]) && YEAR('rep Target'[Target year])<=b))),
+			IF(MONTH(a)>=04 && MONTH(b)<=12,
+			CALCULATE(SUM('rep Target'[GpTarget]),FILTER('rep Target',('rep Target'[Target Quarter]=="Q2"||'rep Target'[Target Quarter]=="Q3"||'rep Target'[Target Quarter]=="Q4") || (minmonth<='rep Target'[Target Month Number] && 'rep Target'[Target Month Number]<=maxmonth) || (a<=YEAR('rep Target'[Target year]) && YEAR('rep Target'[Target year])<=b))),
+			
+			 
+			
+			CALCULATE(SUM('rep Target'[GpTarget]),FILTER('rep Target','rep Target'[Target Quarter]=="Q1"||'rep Target'[Target Quarter]=="Q2"||'rep Target'[Target Quarter]=="Q3"||'rep Target'[Target Quarter]=="Q4" || (minmonth<='rep Target'[Target Month Number] && 'rep Target'[Target Month Number]<=maxmonth) || a<=YEAR('rep Target'[Target year]) && YEAR('rep Target'[Target year])<=b)))))))))))
+			
+			 
+			
+			
+			return
+			result*1000000
+			
+			```
+		displayFolder: Custom Measures
+		lineageTag: 2fb33929-ff64-4992-913f-3d050c4ce94d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Revenue Target' = ```
+			
+			var a = MIN('Calendar'[Date])
+			var b = MAX('Calendar'[Date])
+			--Normal slicer date convert into fiscal date
+			var fiscalmina = DATE(
+			    YEAR(a)+ QUOTIENT(MONTH(a)+ (13 - 4),13),
+			    MOD( MONTH(a)+ (13-4) -1 ,12) +1,
+			    DAY(a)
+			    )
+			var fiscalminb = DATE(
+			    YEAR(b)+ QUOTIENT(MONTH(b)+ (13 - 4),13),
+			    MOD( MONTH(b)+ (13-4) -1 ,12) +1,
+			    DAY(b)
+			    )
+			var minyear = YEAR(a) --YEAR(fiscalmina) --2023.01.01
+			var maxyear = YEAR(b) --YEAR(fiscalminb) --2023.03.01
+			var minmonth = MONTH(a) --MONTH(fiscalmina)
+			var maxmonth = MONTH(b) --MONTH(fiscalminb)
+			
+			 
+			
+			var result = IF(MONTH(a)>=01 && MONTH(b)<=03,
+			CALCULATE(SUM('rep Target'[RevenueTarget]),FILTER('rep Target','rep Target'[Target Quarter]=="Q1" || (minmonth<='rep Target'[Target Month Number] && 'rep Target'[Target Month Number]<=maxmonth) || (a<=YEAR('rep Target'[Target year]) && YEAR('rep Target'[Target year])<=b))),
+			IF(MONTH(a)>=04 && MONTH(b)<=06,
+			CALCULATE(SUM('rep Target'[RevenueTarget]),FILTER('rep Target','rep Target'[Target Quarter]=="Q2" || (minmonth<='rep Target'[Target Month Number] && 'rep Target'[Target Month Number]<=maxmonth) || (a<=YEAR('rep Target'[Target year]) && YEAR('rep Target'[Target year])<=b))),--(a<=YEAR('rep Target'[Target year]) && YEAR('rep Target'[Target year])<=b)),
+			IF(MONTH(a)>=07 && MONTH(b)<=09,
+			CALCULATE(SUM('rep Target'[RevenueTarget]),FILTER('rep Target','rep Target'[Target Quarter]=="Q3" || (minmonth<='rep Target'[Target Month Number] && 'rep Target'[Target Month Number]<=maxmonth) || (a<=YEAR('rep Target'[Target year]) && YEAR('rep Target'[Target year])<=b))),
+			IF(MONTH(a)>=09 && MONTH(b)<=12,
+			CALCULATE(SUM('rep Target'[RevenueTarget]),FILTER('rep Target','rep Target'[Target Quarter]=="Q4" || (minmonth<='rep Target'[Target Month Number] && 'rep Target'[Target Month Number]<=maxmonth) || (a<=YEAR('rep Target'[Target year]) && YEAR('rep Target'[Target year])<=b))),
+			IF(MONTH(a)>=01 && MONTH(b)<=06,
+			CALCULATE(SUM('rep Target'[RevenueTarget]),FILTER('rep Target','rep Target'[Target Quarter]=="Q1"||'rep Target'[Target Quarter]=="Q2" || (minmonth<='rep Target'[Target Month Number] && 'rep Target'[Target Month Number]<=maxmonth) || (a<=YEAR('rep Target'[Target year]) && YEAR('rep Target'[Target year])<=b))),
+			IF(MONTH(a)>=07 && MONTH(b)<=12,
+			CALCULATE(SUM('rep Target'[RevenueTarget]),FILTER('rep Target','rep Target'[Target Quarter]=="Q3"||'rep Target'[Target Quarter]=="Q4" || (minmonth<='rep Target'[Target Month Number] && 'rep Target'[Target Month Number]<=maxmonth) || (a<=YEAR('rep Target'[Target year]) && YEAR('rep Target'[Target year])<=b))),
+			IF(MONTH(a)>=04 && MONTH(b)<=09,
+			CALCULATE(SUM('rep Target'[RevenueTarget]),FILTER('rep Target','rep Target'[Target Quarter]=="Q2"||'rep Target'[Target Quarter]=="Q3" || (minmonth<='rep Target'[Target Month Number] && 'rep Target'[Target Month Number]<=maxmonth) || (a<=YEAR('rep Target'[Target year]) && YEAR('rep Target'[Target year])<=b))),
+			IF(MONTH(a)>=01 && MONTH(b)<=09,
+			CALCULATE(SUM('rep Target'[RevenueTarget]),FILTER('rep Target','rep Target'[Target Quarter]=="Q1"||'rep Target'[Target Quarter]=="Q2"||'rep Target'[Target Quarter]=="Q3" || (minmonth<='rep Target'[Target Month Number] && 'rep Target'[Target Month Number]<=maxmonth) || (a<=YEAR('rep Target'[Target year]) && YEAR('rep Target'[Target year])<=b))),
+			IF(MONTH(a)>=04 && MONTH(b)<=12,
+			CALCULATE(SUM('rep Target'[RevenueTarget]),FILTER('rep Target',('rep Target'[Target Quarter]=="Q2"||'rep Target'[Target Quarter]=="Q3"||'rep Target'[Target Quarter]=="Q4") || (minmonth<='rep Target'[Target Month Number] && 'rep Target'[Target Month Number]<=maxmonth) || (a<=YEAR('rep Target'[Target year]) && YEAR('rep Target'[Target year])<=b))),
+			
+			 
+			
+			CALCULATE(SUM('rep Target'[RevenueTarget]),FILTER('rep Target','rep Target'[Target Quarter]=="Q1"||'rep Target'[Target Quarter]=="Q2"||'rep Target'[Target Quarter]=="Q3"||'rep Target'[Target Quarter]=="Q4" || (minmonth<='rep Target'[Target Month Number] && 'rep Target'[Target Month Number]<=maxmonth) || a<=YEAR('rep Target'[Target year]) && YEAR('rep Target'[Target year])<=b)))))))))))
+			
+			 
+			
+			
+			return
+			result*1000000
+			
+			```
+		displayFolder: Custom Measures
+		lineageTag: 208e74c3-254a-4dac-baaa-c7e14bb44490
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Custom Gross Profit Percentage' =
+			--[Total Estimated GP]/ [Total Gp Target]
+			DIVIDE([Total Estimated GP],[Total Gp Target])
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Custom Measures
+		lineageTag: 9f8b1742-f62f-47eb-a3a3-b0ba2f1b26df
+
+		changedProperty = FormatString
+
+	measure 'Custom Sales Percentage' =
+			--[Total Sales] / [Total Revenue Target]
+			DIVIDE([Total Sales],[Total Revenue Target])
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Custom Measures
+		lineageTag: 19ecb4f7-ee15-475e-97d5-a75c84c4fafb
+
+		changedProperty = FormatString
+
+	measure 'Custom Total Sales' =
+			
+			var a = FIRSTDATE('Calendar'[Date])
+			var b = LASTDATE('Calendar'[Date])
+			
+			return
+			CALCULATE([Total Sales],DATESBETWEEN('rep SalesOrder'[OrderCreatedDate],a,b))
+		displayFolder: Custom Measures
+		lineageTag: 7b462052-2838-440f-9b07-2a1a20cfacaa
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Custom Total Revenue' =
+			
+			var a = FIRSTDATE('Calendar'[Date])
+			var b = [Sel_date]
+			
+			return
+			CALCULATE([Total Revenue],DATESBETWEEN('rep InvoiceCnDn'[InvoiceDate],a,b))
+		displayFolder: Custom Measures
+		lineageTag: 4d9f4da5-dd99-4134-83b1-6a1c8eaae0d0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Custom Before 30 days Collections' = CALCULATE([Total Collection], FILTER('rep Payment','rep Payment'[Days Delay]<=30))
+		displayFolder: Custom Measures
+		lineageTag: 6b71464c-2e2f-4171-865b-a6a7fb633dc5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Custom GP Bullet Colour' = IF([Estimated GP Percentage (Custom)]<0.5,"#FF0000",IF([Estimated GP Percentage (Custom)]<0.75,"#F57200",IF([Estimated GP Percentage (Custom)]<1,"#35C709",IF([Estimated GP Percentage (Custom)]<1.5,"#AC1097",IF([Estimated GP Percentage (Custom)]>=1.5,"#FFD700","#FFFFFF")))))
+		displayFolder: Custom Measures
+		lineageTag: e0dde148-02f9-4458-80b9-cabf195036c7
+
+	measure 'Custom Sales Bullet Colour' = IF([Custom Sales Percentage]<0.5,"#FF0000",IF([Custom Sales Percentage]<0.75,"#F57200",IF([Custom Sales Percentage]<1,"#35C709",IF([Custom Sales Percentage]<1.5,"#AC1097",IF([Custom Sales Percentage]>=1.5,"#FFD700","#FFFFFF")))))
+		displayFolder: Custom Measures
+		lineageTag: 3a4cdd36-7cf2-4ffb-b920-80d98e281e61
+
+	measure 'Custom Last Year GP' =
+			
+			CALCULATE([Total Actual GP],SAMEPERIODLASTYEAR('Calendar'[Date]))
+		displayFolder: Custom Measures
+		lineageTag: f3c86298-bb3f-4571-b3e2-eb1357811bd1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Custom Last Year Revenue' =
+			
+			CALCULATE([Total Revenue],SAMEPERIODLASTYEAR('Calendar'[Date]))
+		displayFolder: Custom Measures
+		lineageTag: 35dd5ecc-6712-410c-a82a-182a5c3098df
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Custom Show Selected Dimension' = ```
+			
+			 if(SELECTEDVALUE('Dimension'[Dimension])="Sales",[Total Sales],[Total Revenue])
+			```
+		displayFolder: Custom Measures
+		lineageTag: adbcf174-ff89-4ece-b869-62ecdedbd935
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Test Collection Count last 6 month' =
+			
+			var Sel_date = [Sel_date]
+			var sixmonthstart = EOMONTH(Sel_date,-6)+1
+			return
+			IF(MAX('Calendar'[Date])>=sixmonthstart && MAX('Calendar'[Date])<=Sel_date,DISTINCTCOUNT('rep Payment'[InvoiceNumber]),BLANK())
+		lineageTag: 8de20f5d-534f-4611-a797-41e286cf28c4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Test Last 6 months YTD Revenue' =
+			
+			var Sel_date = [Sel_date]
+			var sixmonthstart = EOMONTH(Sel_date,-6)+1
+			return
+			IF(MAX('Calendar'[Date])>=sixmonthstart && MAX('Calendar'[Date])<=Sel_date,[YTD Revenue],BLANK())
+		lineageTag: d437764a-f477-49b6-9915-431d951b06af
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Last Year Revenue' =
+			
+			var Sel_date = [Sel_date]
+			var sixmonthstart = EOMONTH(Sel_date,-6)+1
+			return
+			CALCULATE([last 6 months Revenue],SAMEPERIODLASTYEAR('Calendar'[Date]))
+		lineageTag: f94b4baa-dc61-4c7f-bf2c-87490abeb55b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Test Last 6 months YTD GP' =
+			
+			var Sel_date = [Sel_date]
+			var sixmonthstart = EOMONTH(Sel_date,-6)+1
+			return
+			IF(MAX('Calendar'[Date])>=sixmonthstart && MAX('Calendar'[Date])<=Sel_date,[YTD Gross Profit],BLANK())
+		lineageTag: 0d6506c1-0f95-4e2b-a2f8-db4ab4a73589
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Last Year GP' =
+			
+			CALCULATE([last 6 months GP],SAMEPERIODLASTYEAR('Calendar'[Date]))
+		lineageTag: 8a088705-53d6-4d6d-9c0a-b32c3f9eb291
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales Conversion Custom' =
+			var Sel_date = [Sel_date]
+			var StartDate = MIN ('Calendar'[Date])
+			return
+			IF(MAX('Calendar'[Date])>=StartDate && MAX('Calendar'[Date])<=Sel_date,[Total Sales],BLANK())
+		displayFolder: Custom Measures
+		lineageTag: 7666d706-1299-4479-b7d5-b9d3088d831f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Invoice Conversion Custom' =
+			
+			var Start_date = [Start_date]
+			var Sel_date = [Sel_date]
+			--var last_six_m_start = EOMONTH(Sel_date,-7)+1
+			var D2 = MIN('Calendar'[Date])
+			var D3 = MAX('Calendar'[Date])
+			var Cal = CALCULATE([Invoice value Value1],'rep InvoiceCnDn'[SO_Date]>=D2 && 'rep InvoiceCnDn'[SO_Date]<=D3,CROSSFILTER('Calendar'[Date], 'rep InvoiceCnDn'[InvoiceDate], None))
+			return
+			IF(MAX('Calendar'[Date])>=Start_date && MAX('Calendar'[Date])<=Sel_date, Cal,BLANK())
+		displayFolder: Custom Measures
+		lineageTag: 9c871a49-13b2-4d2b-9d4f-1c1acceb0fd2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Collection Conversion Custom' =
+			
+			var Start_date = [Start_date]
+			var Sel_date = [Sel_date]
+			--var last_six_m_start = EOMONTH(Sel_date,-7)+1
+			var D2 = MIN('Calendar'[Date])
+			var D3 = MAX('Calendar'[Date])
+			var Cal = CALCULATE([Total Collection],'rep Payment'[SO_Date]>=D2 && 'rep Payment'[SO_Date]<=D3, CROSSFILTER('Calendar'[Date], 'rep Payment'[PaymentDate], None))
+			return
+			IF(MAX('Calendar'[Date])>=Start_date && MAX('Calendar'[Date])<=Sel_date, Cal,BLANK())
+		displayFolder: Custom Measures
+		lineageTag: fc28f455-862a-46f9-a81f-bfe6a7b6003c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales Conversion Count Custom' =
+			
+			var Sel_date = [Sel_date]
+			var StartDate = MIN('Calendar'[Date])
+			return
+			CALCULATE(DISTINCTCOUNT('rep SalesOrder'[So_Id]),filter('Calendar','Calendar'[Date]>=StartDate && 'Calendar'[Date]<=Sel_date))
+		formatString: 0
+		displayFolder: Custom Measures
+		lineageTag: ccdd1613-40fa-42f1-b3a2-804a416edadb
+
+	measure 'Invoice Conversion Count Custom' =
+			
+			var Sel_date = [Sel_date]
+			--var last_six_m_start = EOMONTH(Sel_date,-7)+1
+			var D2 = MIN('Calendar'[Date])
+			var D3 = MAX('Calendar'[Date])
+			var Cal = CALCULATE(DISTINCTCOUNT('rep InvoiceCnDn'[So_Id]),'rep InvoiceCnDn'[SO_Date]>=D2 && 'rep InvoiceCnDn'[SO_Date]<=D3,CROSSFILTER('Calendar'[Date], 'rep InvoiceCnDn'[InvoiceDate], None))
+			return
+			IF(MAX('Calendar'[Date])>=D2 && MAX('Calendar'[Date])<=Sel_date, Cal,BLANK())
+		formatString: 0
+		displayFolder: Custom Measures
+		lineageTag: b2938f7f-b1bd-4f00-a086-621721e3855b
+
+	measure 'Collection Conversion Count Custom' = ```
+			
+			var Sel_date = [Sel_date]
+			--var last_six_m_start = EOMONTH(Sel_date,-7)+1
+			var D2 = MIN('Calendar'[Date])
+			var D3 = MAX('Calendar'[Date])
+			var Cal = CALCULATE(DISTINCTCOUNT('rep Payment'[SO_Id]),'rep Payment'[SO_Date]>=D2 && 'rep Payment'[SO_Date]<=D3,CROSSFILTER('Calendar'[Date], 'rep Payment'[PaymentDate], None))
+			return
+			IF(MAX('Calendar'[Date])>=D2 && MAX('Calendar'[Date])<=Sel_date, Cal,BLANK()) 
+			```
+		formatString: 0
+		displayFolder: Custom Measures
+		lineageTag: e304332c-e00b-4573-b683-75dd89b221c9
+
+	measure 'INV% Custom' = DIVIDE([Invoice Conversion Custom],[Sales Conversion Custom])
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Custom Measures
+		lineageTag: ff3e522f-0f7f-4e9b-9f5f-612c28debdba
+
+	measure 'Balance Custom' = [Invoice Conversion Custom]-[Collection Conversion Custom]
+		displayFolder: Custom Measures
+		lineageTag: 61a3a99a-9d06-4283-b792-bfbf138d59f3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'COL% Custom' = DIVIDE([Collection Conversion Custom],[Invoice Conversion Custom])
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Custom Measures
+		lineageTag: b7b8c457-aba0-41a5-97cb-6bee8d8473d0
+
+	measure Start_date = MINX(ALLSELECTED('Calendar'[Date]),'Calendar'[Date])
+		formatString: General Date
+		lineageTag: 9ee35337-f4c8-420a-a514-04333c1e8e2a
+
+	measure 'Selected Period Collection' =
+			
+			var Sel_date = [Sel_date]
+			var start_date = [Start_date]
+			return
+			IF(MAX('Calendar'[Date])>=start_date && MAX('Calendar'[Date])<=Sel_date,[Total Collection],BLANK())
+		displayFolder: Custom Measures
+		lineageTag: 52e36ebf-bff7-452b-b027-368ac4efedeb
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Selected Period Sales' =
+			
+			var Sel_date = [Sel_date]
+			var start_date = [Start_date]
+			return
+			IF(MAX('Calendar'[Date])>=start_date && MAX('Calendar'[Date])<=Sel_date,[Total Sales],BLANK())
+		displayFolder: Custom Measures
+		lineageTag: dd8ae9de-52f0-4068-9837-6d146bfd0863
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Selected Period Revenue' =
+			
+			var Sel_date = [Sel_date]
+			var start_date = [Start_date]
+			return
+			IF(MAX('Calendar'[Date])>=start_date && MAX('Calendar'[Date])<=Sel_date,[Total Revenue],BLANK())
+		displayFolder: Custom Measures
+		lineageTag: d8a363e9-48b8-45d9-8bd6-fb8081e04a4e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total sales period only custom' =
+			
+			var Sel_date = [Sel_date]
+			var start_date = [Start_date]
+			return
+			IF(MAX('Calendar'[Date])>=start_date && MAX('Calendar'[Date])<=Sel_date,[Total Sales],BLANK())
+		displayFolder: Custom Measures
+		lineageTag: 8e27d278-1a36-40f8-a520-2ff908e7294a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Custom rolling avg sales' =
+			
+			AVERAGEX(
+			filter
+			(ALLSELECTED('Calendar'[Year Month Number],'Calendar'[Year Month Name]),'Calendar'[Year Month Number]<=MAX('Calendar'[Year Month Number])),[Total sales period only custom])
+		displayFolder: Custom Measures
+		lineageTag: 8e683980-5db2-4072-8814-ec07e96138d3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Selected Period GP' =
+			
+			var Sel_date = [Sel_date]
+			var start_date = [Start_date]
+			return
+			IF(MAX('Calendar'[Date])>=start_date && MAX('Calendar'[Date])<=Sel_date,[Total Actual GP],BLANK())
+		displayFolder: Custom Measures
+		lineageTag: b501f955-bbd3-4f28-ac6e-44f2160131dd
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total GP period only custom' =
+			
+			var Sel_date = [Sel_date]
+			var start_date = [Start_date]
+			return
+			IF(MAX('Calendar'[Date])>=start_date && MAX('Calendar'[Date])<=Sel_date,[Total Actual GP],BLANK())
+		displayFolder: Custom Measures
+		lineageTag: 4544d7a3-683c-4e92-aa51-468d62ce10d0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Custom rolling avg GP' =
+			
+			AVERAGEX(
+			filter
+			(ALLSELECTED('Calendar'[Year Month Number],'Calendar'[Year Month Name]),'Calendar'[Year Month Number]<=MAX('Calendar'[Year Month Number])),[Total GP period only custom])
+		displayFolder: Custom Measures
+		lineageTag: 0d1f6391-c060-4989-a91f-a59c27760dad
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '6 month sales test' =
+			
+			var Sel_date = [Sel_date]
+			var sixmonthstart = EOMONTH(Sel_date,-2)+1
+			return
+			sixmonthstart
+		formatString: General Date
+		lineageTag: 05979a29-fb01-46c4-aa30-d776e8601a76
+
+	measure 'Max Fiscal Date' = MAXX(ALLSELECTED('Calendar'[Fiscal Date]),'Calendar'[Fiscal Date])
+		formatString: General Date
+		lineageTag: a7a57234-2141-4328-8e84-f420db849bed
+
+	measure '__Test YTD  Target Date' = MAX('Calendar'[Fiscal Date])
+		formatString: General Date
+		lineageTag: 44ffa830-b366-4ac9-b048-a3f6dcd8525e
+
+	measure '___GP Target Test' =
+			
+			
+			
+			
+			
+			var Sel_date = MAX('Calendar'[Fiscal Date])
+			
+			var seldateyear = year(Sel_date)
+			var seldatemonth = MONTH(Sel_date)
+			var seldatequarter = QUARTER(Sel_date)
+			--var fiscalyearstart_date = DATE(seldateyear,"4","1")
+			return
+			calculate(SUM('rep Target'[GpTarget]),'rep Target'[Target year] = seldateyear,seldatemonth>='rep Target'[Target Month Number] && seldatequarter>='rep Target'[Target Quarter Number]
+			)
+		lineageTag: 8c7a3e92-681f-470c-ae7f-3079ed1c8681
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Customer dimension' = if(SELECTEDVALUE('Top 10 Customers'[Slicer Value])="Gross Profit",[YTD Gross Profit],[YTD Revenue])
+		lineageTag: d528588a-3e7d-42a2-a4e2-da6b42f6f16b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Customer 10 Topic' = if(SELECTEDVALUE('Top 10 Customers'[Slicer Value])="Gross Profit","(BASED ON GROSS PROFIT)","(BASED ON REVENUE)")
+		lineageTag: bbd55c00-153c-4100-87de-9de28f341dee
+
+	measure 'Salesperson 10 Topic' = if(SELECTEDVALUE('Top 10 Salespersons'[Slicer Value])="GP Achievement","(BASED ON GP ACHIEVEMENT)","(BASED ON SALES)")
+		lineageTag: 4c2520d5-4e5b-405e-82bd-9f64feb193af
+
+	measure 'Salesperson dimension' = if(SELECTEDVALUE('Top 10 Salespersons'[Slicer Value])="GP Achievement",[Estimated GP Percentage],[YTD Sales])
+		lineageTag: 39b2a540-d96f-446a-bd12-22f918e9fe2b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Top 10 light customer' =
+			
+			if(SELECTEDVALUE('Top 10 Customers'[Slicer Value])="Gross Profit",UNICHAR(11044),BLANK())
+		lineageTag: 47333376-fa0c-4dcc-8adb-c03e143e013f
+
+	measure 'Gp Customer colour' = if([Estimated GP Percentage] < 0.5 , "FD0000",IF([Estimated GP Percentage]<0.75, "FD3D00"))
+		lineageTag: 6e8d406c-b917-42b2-ba99-5d2de7572f69
+
+	measure 'OS Value Test' = ```
+			
+			var selectedmaxdate = MAX('Calendar'[Date])
+			
+			RETURN
+			
+			SUMX(
+			
+			    ADDCOLUMNS(
+			
+			        SUMMARIZE('rep OutstandingPayment', 'rep OutstandingPayment'[InvoiceNumber]),
+			
+			        "LastPaymentDate", CALCULATE(LASTDATE('rep OutstandingPayment'[PaymentDate]), 
+			        'rep OutstandingPayment'[PaymentDate] <= selectedmaxdate),
+			
+			        "ToSelectedDateOS", CALCULATE(MIN('rep OutstandingPayment'[OsBalance]) + 0, 
+			        'rep OutstandingPayment'[PaymentDate] <= selectedmaxdate)
+			
+			        ),
+			
+			    [ToSelectedDateOS]
+			
+			)
+			```
+		lineageTag: 7133b3c3-d42d-46f0-8b6e-dbfc019a77ff
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '% Sales Contribution' =
+			
+			var totsale = [Total Sales]
+			var allsales = CALCULATE([Total Sales],ALLSELECTED())//'rep Employee'[Salesperson Name]
+			return
+			DIVIDE([Total Sales],allsales,BLANK())
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Base Measures
+		lineageTag: e82856af-b91c-4826-a876-16985d3d770f
+
+	measure '% GP Contribution' =
+			
+			var totsale = [Total Actual GP]
+			var allgp = CALCULATE([Total Actual GP],ALLSELECTED())//'Customer Master'[CustomerName]
+			return
+			DIVIDE([Total Actual GP],allgp,BLANK())
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Base Measures
+		lineageTag: 8f0f35a9-ea79-4623-a058-8f3cc0a79182
+
+	measure 'OS Balance' = ```
+			
+			
+			var selectedmaxdate = MAX('Calendar'[Date])
+			
+			RETURN
+			
+			SUMX(
+			
+			    ADDCOLUMNS(
+			
+			        SUMMARIZE('rep OutstandingPayment', 'rep OutstandingPayment'[InvoiceNumber]),
+			        "ToSelectedDateOS",
+			        var LastPaymentDate =      
+			        CALCULATE(LASTDATE('rep OutstandingPayment'[PaymentDate]), 
+			        'rep OutstandingPayment'[PaymentDate] <= selectedmaxdate)
+			        return 
+			        
+			        CALCULATE(sum('rep OutstandingPayment'[OsBalance]) + 0,
+			
+			        'rep OutstandingPayment'[PaymentDate] = LastPaymentDate)
+			
+			        ),
+			
+			    [ToSelectedDateOS])
+			```
+		displayFolder: Base Measures
+		lineageTag: 66e8f5e8-b6ae-4557-bfab-a8bb859f2af1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Target Sales' = SUM('rep Target'[RevenueTarget])*1000000
+		displayFolder: Base Measures
+		lineageTag: a21ac868-244c-4410-b352-affa57d4a204
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Target GP' = SUM('rep Target'[GpTarget])*1000000
+		displayFolder: Base Measures
+		lineageTag: 9d30355b-3f35-47d4-b4ae-e809cc95e3b8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'YTD Target Sales' = ```
+			
+			
+			--CALCULATE([Total Target Sales],DATESYTD('Calendar'[Fiscal Date]))--,'Calendar'[Date]<= Sel_date)
+			CALCULATE([Total Target Sales],DATESYTD('Calendar'[Fiscal Date]),USERELATIONSHIP('Calendar'[Date],'rep Target'[Target_Date]))
+			
+			```
+		displayFolder: YTD Measures
+		lineageTag: 1bb11491-5fc8-4e79-bca3-a3fdf86b723f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'YTD Target GP' =
+			
+			--CALCULATE([Total Target GP],DATESYTD('Calendar'[Fiscal Date]))--,'Calendar'[Date]<= Sel_date)
+			CALCULATE([Total Target GP],DATESYTD('Calendar'[Fiscal Date]),USERELATIONSHIP('Calendar'[Date],'rep Target'[Target_Date]))
+		displayFolder: YTD measures
+		lineageTag: 6ec240bd-dc54-4613-820c-bfe639eac0dc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Estimated Cost' = ```
+			
+			SUMX(
+			    VALUES('rep SalesOrder'[So_Id]),
+			        
+			        CALCULATE(MINX(values('rep SalesOrder'[So_Id]),MIN('rep SalesOrder'[EstimatedCost]))
+			))
+			```
+		displayFolder: Base Measures
+		lineageTag: 478ba521-24ab-40f2-af1c-06982b5e0c8e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Estimated GP' =
+			
+			/*SUMX(
+			    VALUES('rep SalesOrder'[So_Id]),
+			        //CALCULATE(AVERAGE('rep SalesOrder'[EstimatedGp]),values('rep SalesOrder'[So_Id])
+			        CALCULATE(MINX(values('rep SalesOrder'[So_Id]),MIN('rep SalesOrder'[EstimatedGp]))
+			        )
+			    )*/
+			    VAR dummytbl =
+			    SUMMARIZE(
+			        'rep SalesOrder',
+			        'rep SalesOrder'[So_Id],
+			        'rep SalesOrder'[SalesOrderType],
+			        "value",
+			            (
+			            CALCULATE(
+			                MINX(values('rep SalesOrder'[So_Id]), MIN('rep SalesOrder'[EstimatedGp]))
+			            )
+			
+			            /*
+			
+			            CALCULATE(
+			
+			                MINX('rep SalesOrder', MIN('rep SalesOrder'[EstimatedGp])),
+			
+			                FILTER(
+			
+			                    'rep SalesOrder',
+			
+			                    'rep SalesOrder'[So_Id] = EARLIER('rep SalesOrder'[So_Id])
+			
+			                )
+			
+			                */
+			
+			        )
+			
+			    )
+			
+			RETURN
+			    SUMX(dummytbl, [value])
+		displayFolder: Base Measures
+		lineageTag: fb13d0cd-f6d8-48a0-a475-5d5614b9dff7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Estimated Sales' =
+			
+			SUMX(
+			    VALUES('rep SalesOrder'[So_Id]),
+			        //CALCULATE(AVERAGE('rep SalesOrder'[EstimatedGp]),values('rep SalesOrder'[So_Id])
+			        CALCULATE(MINX(values('rep SalesOrder'[So_Id]),MIN('rep SalesOrder'[OrderValueWithoutTax]))
+			))
+		displayFolder: Base Measures
+		lineageTag: 464ac851-3e8e-4452-bec6-a7e2df500d83
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'YTD Estimated GP' =
+			
+			CALCULATE([Total Estimated GP],DATESYTD('Calendar'[Fiscal Date]))
+		displayFolder: YTD Measures
+		lineageTag: 02cde594-8fa6-4ef1-842d-a856eb96a5de
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'YTD Collection Count' =
+			
+			var Sel_date = MAX('Calendar'[Date])
+			return
+			--Sel_date
+			CALCULATE([Total Collection Count],DATESYTD('Calendar'[Fiscal Date]))
+		formatString: 0
+		displayFolder: YTD measures
+		lineageTag: f17fbe42-1fc9-4b45-80d6-984ec029008e
+
+	measure 'SalesP Default' =
+			
+			if(SELECTEDVALUE('Top 10 Salespersons'[Slicer Value])="GP Achievement",BLANK(),[YTD Sales])
+		lineageTag: 135b3000-afbf-438c-aefb-267a2763b4c0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Top 10 Light Salesperson' =
+			
+			if(SELECTEDVALUE('Top 10 Salespersons'[Slicer Value])="GP Achievement",[GP Bullet Colour],[Sales Bullet Colour])
+		lineageTag: fe01e7b3-7fad-4857-bea1-374318b820c5
+
+	measure 'Customer Dimension Custom' =
+			
+			if(SELECTEDVALUE('Top 10 Customers (Custom)'[Value])="Gross Profit",[Total Actual GP],[Total Revenue])
+		lineageTag: bf51a2e8-dc89-4ae9-af31-516ada64eb5a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Top 10 Light Customer (Custom)' =
+			
+			if(SELECTEDVALUE('Top 10 Customers (Custom)'[Value])="Gross Profit",UNICHAR(11044),BLANK())
+		lineageTag: 47ee0d76-9ad1-4efc-9bc0-6497a2f13fe2
+
+	measure 'Estimated GP Percentage (Custom)' = ```
+			
+			DIVIDE([Total Estimated GP],[Total Target GP])
+			
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 8e583c41-951b-437c-8dac-dc7a1aa5d2ca
+
+	measure 'Salesperson Dimension Custom' =
+			
+			if(SELECTEDVALUE('Top 10 Salespersons (Custom)'[Value])="GP Achievement",[Estimated GP Percentage (Custom)],[Total Sales])
+		lineageTag: 838442b5-0ed1-464d-b347-a95bcbd2a5f7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '%GT Value SalesP Custom' =
+			
+			if(SELECTEDVALUE('Top 10 Salespersons (Custom)'[Value])="GP Achievement",BLANK(),[Total Sales])
+		lineageTag: 1b027462-5d3f-456b-b84c-de526b6ed1a2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Top 10 Light Salesperson Custom' = ```
+			if(SELECTEDVALUE('Top 10 Salespersons (Custom)'[Value])="GP Achievement",[Custom GP Bullet Colour],[Custom Sales Bullet Colour])
+			
+			```
+		lineageTag: 6af17d67-50a4-4854-9bed-9ed37614d081
+
+	measure 'Salespersons 10 Topic Custom' = if(SELECTEDVALUE('Top 10 Salespersons (Custom)'[Value])="GP Achievement","(BASED ON GP ACHIEVEMENT)","(BASED ON SALES)")
+		lineageTag: 89f93e22-5505-4328-892c-83742b226234
+
+	measure 'Customer 10 Topic Custom' = if(SELECTEDVALUE('Top 10 Customers (Custom)'[Value])="Gross Profit","(BASED ON GROSS PROFIT)","(BASED ON REVENUE)")
+		lineageTag: 673f2314-99d6-4060-86e3-f7cac1ba4669
+
+	measure 'OS Count' = ```
+			
+			var selectedmaxdate = MAX('Calendar'[Date])
+			var OS_Table = 
+			ADDCOLUMNS(
+			
+			        SUMMARIZE('rep OutstandingPayment', 'rep OutstandingPayment'[InvoiceNumber]),
+			
+			        "LastPaymentDate", CALCULATE(LASTDATE('rep OutstandingPayment'[PaymentDate]), 
+			        'rep OutstandingPayment'[PaymentDate] <= selectedmaxdate,'rep InvoiceCnDn'[InvoiceDate]<=selectedmaxdate),
+			
+			        "ToSelectedDateOS", CALCULATE(MIN('rep OutstandingPayment'[OsBalance]) + 0, 
+			        'rep OutstandingPayment'[PaymentDate] <= selectedmaxdate,'rep InvoiceCnDn'[InvoiceDate]<=selectedmaxdate)
+			
+			        )
+			
+			
+			RETURN
+			
+			    COUNTROWS(FILTER(OS_Table,[ToSelectedDateOS]>0))
+			```
+		formatString: 0
+		lineageTag: 8ec1b4e9-a8f1-48fd-99f0-5a3098f9eaf7
+
+	measure 'YTD Gross profit percentage' =
+			
+			DIVIDE([YTD Gross Profit],[YTD Target GP])
+		lineageTag: b4ebd9b8-cc61-4fbc-a3bc-84dbf7ac8365
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '_Sales Conversion Count Last 6 Months Card' =
+			
+			var Sel_date = [Sel_date]
+			var last_six_m_start = EOMONTH(Sel_date,-6)+1
+			return
+			--CALCULATE(DISTINCTCOUNT('rep SalesOrder'[So_Id]),filter('Calendar','Calendar'[Date]>=last_six_m_start && 'Calendar'[Date]<=Sel_date))
+			
+			--IF(MAX('Calendar'[Date])>=last_six_m_start && MAX('Calendar'[Date])<=Sel_date, DISTINCTCOUNT('rep SalesOrder'[So_Id]),BLANK())
+			
+			CALCULATE(DISTINCTCOUNT('rep SalesOrder'[So_Id]),FILTER('rep SalesOrder',
+			'rep SalesOrder'[OrderCreatedDate]>=last_six_m_start &&
+			'rep SalesOrder'[OrderCreatedDate]<=Sel_date))
+		formatString: 0
+		lineageTag: 138c3ea8-07ba-4e17-8f70-2deaf27ad170
+
+	measure '_Invoice Conversion Count 6 months Card' =
+			
+			var Sel_date = [Sel_date]
+			var last_six_m_start = EOMONTH(Sel_date,-6)+1
+			var D2 = MIN('Calendar'[Date])
+			var D3 = MAX('Calendar'[Date])
+			var Cal = CALCULATE(DISTINCTCOUNT('rep InvoiceCnDn'[So_Id]),'rep InvoiceCnDn'[SO_Date]>=last_six_m_start && 'rep InvoiceCnDn'[SO_Date]<=Sel_date,CROSSFILTER('Calendar'[Date], 'rep InvoiceCnDn'[InvoiceDate], None))
+			return
+			--IF(MAX('Calendar'[Date])>=last_six_m_start && MAX('Calendar'[Date])<=Sel_date, Cal,BLANK())
+			cal
+		formatString: 0
+		lineageTag: 313253d4-ba96-4723-876c-a4bcd5e5c9a4
+
+	measure '_Collection Conversion Count last 6 months Card' =
+			
+			var Sel_date = [Sel_date]
+			var last_six_m_start = EOMONTH(Sel_date,-6)+1
+			var D2 = MIN('Calendar'[Date])
+			var D3 = MAX('Calendar'[Date])
+			var Cal = CALCULATE(DISTINCTCOUNT('rep Payment'[SO_Id]),'rep Payment'[SO_Date]>=last_six_m_start && 'rep Payment'[SO_Date]<=Sel_date,CROSSFILTER('Calendar'[Date], 'rep Payment'[PaymentDate], None))
+			return
+			--IF(MAX('Calendar'[Date])>=last_six_m_start && MAX('Calendar'[Date])<=Sel_date, Cal,BLANK())
+			cal
+		formatString: 0
+		lineageTag: 6f1784b2-e642-473e-9993-058876cc2cb5
+
+	measure '_Sales Conversion Last 6 Months Card' =
+			
+			var Sel_date = [Sel_date]
+			var sixmonthstart = EOMONTH(Sel_date,-6)+1
+			return
+			--IF(MAX('Calendar'[Date])>=sixmonthstart && MAX('Calendar'[Date])<=Sel_date,[Total Sales],BLANK())
+			
+			CALCULATE([Total Sales],FILTER('rep SalesOrder',
+			'rep SalesOrder'[OrderCreatedDate]>=sixmonthstart &&
+			'rep SalesOrder'[OrderCreatedDate]<=Sel_date))
+		lineageTag: 096367a9-e4a5-493b-be28-35303f0c0ebe
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '_Invoice Conversion 6 months Card' =
+			
+			var Sel_date = [Sel_date]
+			var last_six_m_start = EOMONTH(Sel_date,-6)+1
+			var D2 = MIN('Calendar'[Date])
+			var D3 = MAX('Calendar'[Date])
+			var Cal = CALCULATE([Invoice value Value1],'rep InvoiceCnDn'[SO_Date]>=last_six_m_start && 'rep InvoiceCnDn'[SO_Date]<=Sel_date,CROSSFILTER('Calendar'[Date], 'rep InvoiceCnDn'[InvoiceDate], None))
+			return
+			--IF(MAX('Calendar'[Date])>=last_six_m_start && MAX('Calendar'[Date])<=Sel_date, Cal,BLANK())
+			--'rep InvoiceCnDn'[InvoiceDate]>=D2
+			cal
+			--CALCULATE(cal,DATESBETWEEN('rep InvoiceCnDn'[InvoiceDate],last_six_m_start,Sel_date))
+		lineageTag: a5fe5a50-8cf8-4463-be79-d900772d0c5c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '_Collection Conversion last 6 months Card' =
+			
+			var Sel_date = [Sel_date]
+			var last_six_m_start = EOMONTH(Sel_date,-6)+1
+			var D2 = MIN('Calendar'[Date])
+			var D3 = MAX('Calendar'[Date])
+			var Cal = CALCULATE([Total Collection],'rep Payment'[SO_Date]>=last_six_m_start && 'rep Payment'[SO_Date]<=Sel_date, CROSSFILTER('Calendar'[Date], 'rep Payment'[PaymentDate], None))
+			return
+			--IF(MAX('Calendar'[Date])>=last_six_m_start && MAX('Calendar'[Date])<=Sel_date, Cal,BLANK())
+			cal
+		lineageTag: 84dbd221-be95-411c-b070-af04414b3af4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Test start date' = ```
+			
+			var LDate = LASTDATE('Calendar'[Date])
+			var current_fiscaldate = DATE(
+			    if(MONTH(LDate)<4,YEAR(LDate)-1,YEAR(LDate)),
+			    --YEAR(b)+ QUOTIENT(MONTH(b)+ (13 - 4),13),
+			    MOD( MONTH(LDate)+ (13-4) -1 ,12) +1,
+			    DAY(LDate)
+			    )
+			 var fiscal_year = YEAR(current_fiscaldate)   
+			
+			return
+			--current_year
+			--fiscal_year
+			DATE(fiscal_year,"4","1")
+			```
+		formatString: General Date
+		lineageTag: 2d16e918-2285-4c7a-b0f4-5da879410188
+
+	measure 'Sales per bucket' =
+			
+			CALCULATE(
+			    [OS Balance],
+			    FILTER(
+			        VALUES(
+			    )))
+		lineageTag: 2d214507-783d-46a1-917c-5fe294f3428d
+
+	measure 'Outstanding per bucket' = ```
+			
+			var MBDate = MAX('Calendar'[Date])
+			return
+			/*IF(TRUE(),
+			CALCULATE(
+			   SUM('rep OutstandingPayment'[OsBalance]),
+			    FILTER(
+			        VALUES(Os_bucket_Table[Os Bucket]),
+			        COUNTROWS(
+			            FILTER(
+			                Os_bucket_Table,
+			                Os_bucket_Table[Os bucket start date]<=
+			                [Outstanding Difference] && [Outstanding Difference]<=Os_bucket_Table[Os bucket end date]
+			
+			                
+			                )
+			            )>=0
+			        )
+			     ), BLANK())*/
+			
+			/*CALCULATE(
+			   SUM('rep OutstandingPayment'[OsBalance]),
+			    Os_bucket_Table[Os bucket start date]<=
+			                [Outstanding Difference] && [Outstanding Difference]<=Os_bucket_Table[Os bucket end date]
+			     )*/
+			CALCULATE(
+			    [OS Balance],
+			    filter(
+			        VALUES('rep OutstandingPayment'[InvoiceNumber]),
+			        COUNTROWS(
+			            FILTER(
+			                Os_bucket_Table,
+			                Os_bucket_Table[Os bucket start date]<=[Outstanding Days Difference] && Os_bucket_Table[Os bucket end date]>=[Outstanding Days Difference]
+			            )    
+			        )
+			    )
+			)
+			```
+		lineageTag: 04651608-1ae3-4978-9770-66aa34c50868
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Outstanding Days Difference' =
+			
+			var MBDate = MAX('Calendar'[Date])
+			var InDate = MAX('rep OutstandingPayment'[InvoiceDate])
+			--var xyz = SELECTEDVALUE(MBDate)
+			return
+			DATEDIFF(InDate,MBDate,DAY)
+			--xyz
+		formatString: 0
+		lineageTag: 0c03d4ef-10aa-4a50-9ce3-041f37afaa85
+
+	measure 'Outstanding per bucket Count' = ```
+			
+			CALCULATE(
+			    [Total OS Count],
+			    filter(
+			        VALUES('rep OutstandingPayment'[InvoiceNumber]),
+			        COUNTROWS(
+			            FILTER(
+			                Os_bucket_Table,
+			                Os_bucket_Table[Os bucket start date]<=[Outstanding Days Difference] && Os_bucket_Table[Os bucket end date]>=[Outstanding Days Difference]
+			            )    
+			        )
+			    )
+			)
+			```
+		formatString: 0
+		lineageTag: 0433ef73-1bb7-488f-af3d-b7229ffa08af
+
+	measure '_LYTD Estimated GP' =
+			
+			TOTALYTD([Total Estimated GP],SAMEPERIODLASTYEAR('Calendar'[Fiscal Date]))
+		lineageTag: 9f2fe779-192c-4952-b8cc-0e365aef1ae9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Fiscal_year_Start_Date =
+			
+			var syear = YEAR(MAX('Calendar'[Fiscal Date]))
+			
+			return
+			("4/" & "1/" & syear)
+		lineageTag: 2a97af98-2521-42dd-8a31-512338e3f967
+
+	partition Measure-455bb73e-818a-4f1b-b24a-42c3ec951ed0 = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Region = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Region", type text}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"Region", "Column 1"}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Renamed Columns",{"Column 1"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+

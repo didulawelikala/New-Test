@@ -1,0 +1,241 @@
+relationship 11d8ef7d-bfae-4a5d-ae57-12ec676f5a39
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'rep ActualCost'.CreatedDate
+	toColumn: LocalDateTable_a37c2351-f96b-4ad3-9c59-ebb64dc83864.Date
+
+relationship e4d87e19-3132-4f2c-bbdb-1a4f6c523145
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'rep Employee'.CreatedDate
+	toColumn: LocalDateTable_40e8bdd0-06b8-407c-8c0e-d6e3dac1a72c.Date
+
+relationship 54983f7d-8af1-488f-9141-a5e17eb9719f
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'rep Payment'.CreatedDate
+	toColumn: LocalDateTable_57c42116-1c29-4715-91c7-1a711df043f8.Date
+
+relationship 6a6e8351-6958-473c-ba91-d98b85638121
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'rep Target'.CreatedDate
+	toColumn: LocalDateTable_5e91ea3d-1b90-4622-a429-cb4dcf2a0e4c.Date
+
+relationship 95e056bf-8ea8-4b8d-9b6b-da7e296205f8
+	crossFilteringBehavior: bothDirections
+	fromColumn: 'rep SalesOrder'.So_Id
+	toColumn: SalesOrderBridge.So_Id
+
+relationship 7079a3bb-c102-4fb6-be84-577aeaf9f0ff
+	fromColumn: 'rep InvoiceCnDn'.So_Id
+	toColumn: SalesOrderBridge.So_Id
+
+relationship 187f6ac5-bff4-43fb-8c8f-31b7c73db22d
+	fromColumn: 'rep SalesOrder'.SalesPersonId
+	toColumn: 'rep Employee'.SalesPersonId
+
+relationship 12213c32-c1c0-4f6c-a702-22770d99cea0
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'rep InvoiceCnDn'.CreatedDate
+	toColumn: LocalDateTable_f3d7f246-02ab-4f87-ab62-fc04ece30022.Date
+
+relationship 785b1e5b-daf5-4784-96d3-06aca0053862
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'rep OutstandingPayment'.CreatedDate
+	toColumn: LocalDateTable_f66e23f1-5604-4d23-8236-9feaa27296fc.Date
+
+relationship 833fe2ed-f484-400b-9c2a-3ff59981cc76
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'rep SalesOrder'.CreatedDate
+	toColumn: LocalDateTable_2ee5ed97-c235-4f5c-8f13-cce30ffbf789.Date
+
+relationship 44b3899f-593d-4c75-9b52-6a2360ed1f84
+	fromColumn: 'rep ActualCost'.InvoiceNumber
+	toColumn: InvoiceCnDnBridge.InvoiceNumber
+
+relationship 47970059-12f2-4c88-8550-12c4d86396bc
+	fromColumn: 'rep InvoiceCnDn'.InvoiceNumber
+	toColumn: InvoiceCnDnBridge.InvoiceNumber
+
+relationship 720102c4-dc7a-43b2-b27e-fcd5c84f84a4
+	fromColumn: 'rep OutstandingPayment'.InvoiceNumber
+	toColumn: InvoiceCnDnBridge.InvoiceNumber
+
+relationship f198ca5c-17bd-4d5f-87e2-0e15a46ba8ff
+	fromColumn: 'rep Payment'.InvoiceNumber
+	toColumn: InvoiceCnDnBridge.InvoiceNumber
+
+relationship 37931b8d-0551-44e1-a360-3805c7c9aae3
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'rep Payment'.'Inv date'
+	toColumn: LocalDateTable_fe4a6d44-8b4c-4029-b4c1-d67bc6b84d48.Date
+
+relationship d75679b3-96c8-422a-91c2-9c363a40a80f
+	fromColumn: 'rep OutstandingPayment'.SalesPersonId
+	toColumn: 'rep Employee'.SalesPersonId
+
+relationship fc377443-f725-4f87-96e3-d4f6936146d8
+	joinOnDateBehavior: datePartOnly
+	fromColumn: InvoiceCnDnBridge.'inv date'
+	toColumn: LocalDateTable_a40ca1a4-663f-492e-8094-df96750ad43b.Date
+
+relationship 4f10125f-3551-4624-b62b-aa402e2fe0c3
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Calendar2.'Date Key'
+	toColumn: LocalDateTable_b6eecc81-dfd9-4da7-aa71-43509683fd7f.Date
+
+relationship eaf85c4d-247c-4c12-9b3d-a9b69648a715
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'rep InvoiceCnDn'.SO_Date
+	toColumn: LocalDateTable_f42f52cd-ced9-4ad3-b615-d3b4af39b5d0.Date
+
+relationship 18a2ad65-a6db-4a3e-8b90-b5a492fcbdfc
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'rep Payment'.SO_Date
+	toColumn: LocalDateTable_9637f159-d986-486c-bcd4-b099760d1bae.Date
+
+relationship 0182205d-4f01-4866-bffe-30c0ec9c7010
+	fromColumn: 'rep InvoiceCnDn'.CustomerId
+	toColumn: 'Customer Master'.CustomerId
+
+relationship 27a46f64-eaf0-44cd-accf-32caeaeb7113
+	fromColumn: 'rep SalesOrder'.CustomerId
+	toColumn: 'Customer Master'.CustomerId
+
+relationship 494ef33f-32e7-4108-b4f5-8378668315cf
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Calendar2.'Fiscal Date'
+	toColumn: LocalDateTable_aea249c9-e786-47c1-a47b-79f2240b05f1.Date
+
+relationship 99a74df5-75ae-4ed7-bdc6-72b20c45e6a2
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'rep InvoiceCnDn'.Date_xy
+	toColumn: LocalDateTable_31ce7298-e621-42bc-8dfb-4d259e646c11.Date
+
+relationship 47f7336f-f3c5-48cb-bb74-285f7b329221
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'rep ActualCost'.Date_xy
+	toColumn: LocalDateTable_784aa2b2-ae67-4149-8735-1676006de9cd.Date
+
+relationship 1c1a6673-19d3-4f67-ac39-3f0009a5cf84
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'rep OutstandingPayment'.InvoiceDate
+	toColumn: LocalDateTable_06b14a96-5705-4bca-8999-7201c207206d.Date
+
+relationship 8ca31837-1de3-4a2b-8811-b3e3e413a252
+	fromColumn: 'rep Payment'.PaymentDate
+	toColumn: Calendar.Date
+
+relationship de77ba7b-87b4-4862-9ff5-900e9b31b212
+	fromColumn: 'rep ActualCost'.ActualDeliveryDate
+	toColumn: Calendar.Date
+
+relationship b0d54abb-5a4f-4a3c-9ce0-f51bcdc0dc03
+	fromColumn: 'rep InvoiceCnDn'.InvoiceDate
+	toColumn: Calendar.Date
+
+relationship 30cddacb-3447-4890-9556-076e26549c84
+	fromColumn: 'rep SalesOrder'.OrderCreatedDate
+	toColumn: Calendar.Date
+
+relationship a813518d-bed8-4231-8d09-8de4434d7d20
+	isActive: false
+	fromColumn: 'rep OutstandingPayment'.PaymentDate
+	toColumn: Calendar.Date
+
+relationship 08fd9c54-2c5a-4efa-a6f7-038f057afa44
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Calendar2.Date
+	toColumn: LocalDateTable_372897bb-6093-44de-881b-5433a3919175.Date
+
+relationship 05993709-3799-4125-a06b-7f2efef86a6e
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Calendar2.'Start of Year'
+	toColumn: LocalDateTable_51296c58-3231-41e4-8052-4a5bc09088e4.Date
+
+relationship 3879dfd1-46b4-4e44-ab6b-67d636942a62
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Calendar2.'End of Year'
+	toColumn: LocalDateTable_6773c8dc-f84a-449e-90d5-a66bff4ccdd8.Date
+
+relationship f8b6c1c8-82fe-4db7-aa54-2a92488eed4d
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Calendar2.'Start of Month'
+	toColumn: LocalDateTable_12c4e6c1-5e79-4ce0-9b3c-aa8ffb127741.Date
+
+relationship b3fa21c0-33b4-47a5-a67f-c7e09baea7a4
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Calendar2.'End of Month'
+	toColumn: LocalDateTable_d88fee9f-1973-43b0-a052-d7ff6fd92e11.Date
+
+relationship d6c6fdfc-7cde-4dc7-ab8e-f8beddb24923
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Calendar2.'Start of Quarter'
+	toColumn: LocalDateTable_c702a0b7-4550-4d23-85c2-4ba700afa773.Date
+
+relationship 9294ca82-11e5-4c9b-98a0-e015c5509024
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Calendar2.'End of Quarter'
+	toColumn: LocalDateTable_ded9f90f-d910-45c4-afe6-dc4f1d5c0445.Date
+
+relationship 07a87989-2cd7-41cf-bc1d-27d3e4a6e846
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Calendar2.'Start of Week'
+	toColumn: LocalDateTable_ea19a990-038f-41cf-959f-88a051568072.Date
+
+relationship 2fd76c9b-4bf8-4428-ae5e-d06253008616
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Calendar2.'End of Week'
+	toColumn: LocalDateTable_668b1bc1-e33e-4739-96ac-88a3df9fd082.Date
+
+relationship 5ff38284-f6b3-406c-84f0-01bacada86f9
+	fromColumn: 'rep Payment'.SO_Id
+	toColumn: SalesOrderBridge.So_Id
+
+relationship 3b96a7ec-7705-43c1-bbea-cd7ca5576ae1
+	joinOnDateBehavior: datePartOnly
+	fromColumn: SalesOrderBridge.OrderCreatedDate
+	toColumn: LocalDateTable_9a770370-d2a1-4b69-b93b-9dc7d1b84c07.Date
+
+relationship 581ffad0-d40b-422c-9a63-796c15580c89
+	fromColumn: 'rep Payment'.SalesPersonId
+	toColumn: 'rep Employee'.SalesPersonId
+
+relationship 895ecad6-2ab0-4d8a-ae48-6eff309fb160
+	fromColumn: 'rep ActualCost'.CustomerId
+	toColumn: 'Customer Master'.CustomerId
+
+relationship 740a5bc6-7d9e-4186-910b-c9f98d3313b4
+	fromColumn: 'rep OutstandingPayment'.CustomerId
+	toColumn: 'Customer Master'.CustomerId
+
+relationship 82fefb8f-99f2-45ad-9922-f24010f94642
+	fromColumn: 'rep ActualCost'.SalesPersonId
+	toColumn: 'rep Employee'.SalesPersonId
+
+relationship 9c7510cb-2415-4967-afe2-53572b0bb1cc
+	fromColumn: 'rep Payment'.CustomrId
+	toColumn: 'Customer Master'.CustomerId
+
+relationship 3f60006b-48f6-4828-8d35-4c7a731a4e93
+	isActive: false
+	fromColumn: 'rep Target'.Target_Date
+	toColumn: Calendar.Date
+
+relationship 5140e995-4794-4a62-a6cb-75bd4767240c
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'Table 2'.LastPaymentDate
+	toColumn: LocalDateTable_ba2e92b0-8723-473c-8aef-dc49b0af9a27.Date
+
+relationship 689faf17-f92e-4b59-8a98-bcea478d8a75
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'rep Payment'.InvoiceAmountUpdatedDate
+	toColumn: LocalDateTable_25a55c6c-34e2-41fa-b4d8-a481c077d13b.Date
+
+relationship 6d867537-2a25-44e3-805c-f6ae22b31e05
+	fromColumn: 'rep InvoiceCnDn'.SalesPersonId
+	toColumn: 'rep Employee'.SalesPersonId
+
+relationship 05d1817e-4ac4-4b7a-abb7-f79e76e5b833
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'rep Target'.SalesPersonId
+	toColumn: 'rep Employee'.SalesPersonId
+

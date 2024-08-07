@@ -1,0 +1,75 @@
+table 'Table 2'
+	lineageTag: 8a334e63-b547-4879-b77b-6b9e488690a3
+
+	column InvoiceNumber
+		dataType: string
+		lineageTag: e1056b63-1244-4416-ac45-73e972a86c4d
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: rep OutstandingPayment[InvoiceNumber]
+
+		annotation SummarizationSetBy = Automatic
+
+	column LastPaymentDate
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 2b78511a-d65d-4894-8d5e-4fc95c9ec939
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [LastPaymentDate]
+
+		variation Variation
+			isDefault
+			relationship: 5140e995-4794-4a62-a6cb-75bd4767240c
+			defaultHierarchy: LocalDateTable_ba2e92b0-8723-473c-8aef-dc49b0af9a27.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column ToSelectedDateOS
+		dataType: double
+		lineageTag: 630011b5-b7df-4428-a36f-4426d0dbd706
+		summarizeBy: sum
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: [ToSelectedDateOS]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SalesPersonId
+		dataType: string
+		lineageTag: e6963186-4dc4-4888-ab9a-844153d610a3
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: rep OutstandingPayment[SalesPersonId]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Table 2-3bc3fc0f-9053-45a4-8184-a619d9b2e743' = calculated
+		mode: import
+		source = ```
+				var selectedmaxdate = MAX('Calendar'[Date])
+				
+				RETURN
+				
+				
+				
+				    ADDCOLUMNS(
+				
+				        SUMMARIZE('rep OutstandingPayment', 'rep OutstandingPayment'[InvoiceNumber],'rep OutstandingPayment'[SalesPersonId]),
+				
+				        "LastPaymentDate", CALCULATE(LASTDATE('rep OutstandingPayment'[PaymentDate]), 
+				        'rep OutstandingPayment'[PaymentDate] <= selectedmaxdate),
+				
+				        "ToSelectedDateOS", CALCULATE(MIN('rep OutstandingPayment'[OsBalance]) + 0, 
+				        'rep OutstandingPayment'[PaymentDate] <= selectedmaxdate)
+				
+				        )
+				```
+
+	annotation PBI_Id = 027928925da848fcbe43610df0bca488
+

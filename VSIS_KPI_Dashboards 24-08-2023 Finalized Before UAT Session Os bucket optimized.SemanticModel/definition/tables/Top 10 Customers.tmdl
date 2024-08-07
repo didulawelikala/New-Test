@@ -1,0 +1,22 @@
+table 'Top 10 Customers'
+	lineageTag: d223d8f0-dc1a-446b-98c8-9f1cc3252f16
+
+	column 'Slicer Value'
+		dataType: string
+		lineageTag: 8b0359c1-b78e-4d19-83e8-13b173979ffb
+		summarizeBy: none
+		sourceColumn: Slicer Value
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Top 10 Customers-5ceabd9b-37ab-4d85-891b-9d2247d32f69' = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45Wci/KLy5WCCjKT8ssUYrViVYKSi1LzStNVYqNBQA=", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Slicer Value" = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Slicer Value", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

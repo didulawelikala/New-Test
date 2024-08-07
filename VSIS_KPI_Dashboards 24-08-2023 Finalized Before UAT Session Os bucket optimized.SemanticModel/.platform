@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "VSIS_KPI_Dashboards 24-08-2023 Finalized Before UAT Session Os bucket optimized"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "1d4d98fd-e839-4b75-875c-c74f3c89b1aa"
+  }
+}

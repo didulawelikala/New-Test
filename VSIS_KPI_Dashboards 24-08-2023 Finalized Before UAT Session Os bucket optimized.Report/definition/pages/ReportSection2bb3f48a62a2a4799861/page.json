@@ -1,0 +1,8 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/1.0.0/schema.json",
+  "name": "ReportSection2bb3f48a62a2a4799861",
+  "displayName": "Sales Order Conversion Flow Custom",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280
+}

@@ -1,0 +1,129 @@
+table 'rep Employee'
+	lineageTag: 27106315-d490-4ae3-b5ed-c06158f20464
+
+	column SalesPersonId
+		dataType: string
+		lineageTag: 5b723dbd-0514-4880-baa2-7b2105d3e15c
+		summarizeBy: none
+		sourceColumn: SalesPersonId
+
+		annotation SummarizationSetBy = Automatic
+
+	column Department
+		dataType: string
+		lineageTag: 0fec6d87-7f22-48fb-b232-28a05d4deacc
+		summarizeBy: none
+		sourceColumn: Department
+
+		annotation SummarizationSetBy = Automatic
+
+	column Section
+		dataType: string
+		lineageTag: 81436710-a2dd-41ca-bffa-5d74a5e838ee
+		summarizeBy: none
+		sourceColumn: Section
+
+		annotation SummarizationSetBy = Automatic
+
+	column Team
+		dataType: string
+		lineageTag: f992a1c1-75ae-48e2-ab32-a525421636ee
+		summarizeBy: none
+		sourceColumn: Team
+
+		annotation SummarizationSetBy = Automatic
+
+	column Email
+		dataType: string
+		lineageTag: 170bd860-c726-404f-a4bf-bac63b263b18
+		summarizeBy: none
+		sourceColumn: Email
+
+		annotation SummarizationSetBy = Automatic
+
+	column UserName
+		dataType: string
+		lineageTag: 732be609-ac66-409d-ba49-03990c88eab9
+		summarizeBy: none
+		sourceColumn: UserName
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: ee637096-e447-4d0b-b815-bfcf0dea2cd1
+		summarizeBy: none
+		sourceColumn: CreatedDate
+
+		variation Variation
+			isDefault
+			relationship: e4d87e19-3132-4f2c-bbdb-1a4f6c523145
+			defaultHierarchy: LocalDateTable_40e8bdd0-06b8-407c-8c0e-d6e3dac1a72c.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CreatedUser
+		dataType: string
+		lineageTag: c2498852-a0f0-4663-866a-f9c6383b7541
+		summarizeBy: none
+		sourceColumn: CreatedUser
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Invoice Salesperson Name' = LOOKUPVALUE('rep InvoiceCnDn'[SalesPersonName],'rep InvoiceCnDn'[SalesPersonId],'rep Employee'[SalesPersonId])
+		dataType: string
+		lineageTag: 038337c4-a629-4750-8055-7a3d4e7b3467
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sales SalesPerson Name' = LOOKUPVALUE('rep SalesOrder'[SalesPersonName],'rep SalesOrder'[SalesPersonId],'rep Employee'[SalesPersonId])
+		dataType: string
+		lineageTag: 1b23b3da-4362-4ff8-86ad-158b25d20536
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Check Salesperson Names' = 'rep Employee'[Invoice Salesperson Name]<>'rep Employee'[Sales SalesPerson Name]
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: a73277a3-50ed-4a9f-af66-fad24b04395a
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Salesperson Name' = if('rep Employee'[Invoice Salesperson Name]==BLANK(),'rep Employee'[Sales SalesPerson Name],'rep Employee'[Invoice Salesperson Name])
+		dataType: string
+		lineageTag: b6c7989b-effc-46f1-a5a8-c28e9016fe69
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column EmployeeName
+		dataType: string
+		lineageTag: e9970547-d5ea-41fa-8dbe-7472b9b58dbf
+		summarizeBy: none
+		sourceColumn: EmployeeName
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'rep Employee-170e345d-3ada-4dbd-bd74-e708e49cd548' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Databases("sql-mktkpi-prod-aueast-001.database.windows.net"),
+				    #"sqldb-mktkpi-prod-auest-001" = Source{[Name="sqldb-mktkpi-prod-auest-001"]}[Data],
+				    rep_Employee = #"sqldb-mktkpi-prod-auest-001"{[Schema="rep",Item="Employee"]}[Data],
+				    #"Filtered Rows" = Table.SelectRows(rep_Employee, each true)
+				in
+				    #"Filtered Rows"
+
+	annotation PBI_ResultType = Table
+
